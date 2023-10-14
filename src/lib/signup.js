@@ -1,16 +1,17 @@
-export const renderlogin = () => {
+export const renderSignup = () => {
     const section = document.createElement('section');
     const template = `
-        <img>
+        <h1> Regístrate </h1>
         <form>
             <input name="email"> Escribe tu correo</input>
             <input name="pass">Esribe tu contraseña</input>
-            <button id="submit"> Ingresar </button>
+            <button id="submit-sign-in"> Registrarse </button>
         </form>
-        <h3> Regístrate</h3>
-        <button name="sign-in"> Ok </button>
-        <span> Continua con </span>
-        <img>
+        <h3> Ingresa con </h3>
+        <button id="sign-in" > 
+        <img src="" >
+        Continuar con Google </button>
+        
     `;
 section.append(template);
 return section;
