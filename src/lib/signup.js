@@ -8,7 +8,7 @@ export const renderSignup = () => {
             <button id="submit-sign-in"> Registrarse </button>
         </form>
         <h3> Ingresa con </h3>
-        <button id="sign-in" > 
+        <button id="sign-up" onclick="guardar()"  > 
         <img src="" >
         Continuar con Google </button>
         
