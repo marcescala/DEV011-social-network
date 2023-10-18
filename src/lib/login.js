@@ -1,10 +1,10 @@
-export const renderlogin = () => {
+export const login = () => {
     const section = document.createElement('section');
     const template = `
         <img>
         <form>
-            <input name="email"> Escribe tu correo</input>
-            <input name="pass">Esribe tu contraseña</input>
+            <input name="email" placeholder="Escribe tu correo"> </input>
+            <input name="pass" placeholder="Esribe tu contraseña"></input>
             <button id="submit"> Ingresar </button>
         </form>
         <h3> Regístrate</h3>
@@ -12,6 +12,7 @@ export const renderlogin = () => {
         <span> Continua con </span>
         <img>
     `;
-section.append(template);
+    section.innerHTML = template;
+    
 return section;
 };
