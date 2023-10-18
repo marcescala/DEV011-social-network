@@ -1,5 +1,5 @@
 
-export const renderHome = () => {
+export const renderHome = (navigateTo) => {
     const section = document.createElement('section');
     let template = `
         <h1> Habitate </h1>
@@ -28,7 +28,7 @@ export const renderHome = () => {
         </div>
     `;
   
-    section.append(template);
+    section.innerHTML = template;
     return section;
   
   };
