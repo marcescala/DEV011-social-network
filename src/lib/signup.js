@@ -1,18 +1,23 @@
-export const renderSignup = () => {
+export const renderSignup = (navigateTo) => {
     const section = document.createElement('section');
     const template = `
-        <h1> Regístrate </h1>
+        <h3> Regístrate </h3>
         <form>
-            <input name="email"> Escribe tu correo</input>
-            <input name="pass">Esribe tu contraseña</input>
-            <button id="submit-sign-in"> Registrarse </button>
+            <input name="email" placeholder="Escribe tu correo"></input>
+            <input name="pass" placeholder="Esribe tu contraseña"></input>
+            <button id="submit-sign-in" class="button-index"> Regístrarse </button>
         </form>
-        <h3> Ingresa con </h3>
-        <button id="sign-in" > 
-        <img src="" >
-        Continuar con Google </button>
-        
+        <button id="sign-in" class="button-second"> Registrate con Google </button>
+        <div>
+            <span> ¿Ya tienes cuenta? </span>
+            <button id="go-login" class="button-third"> Inicia Sesión </button>
+        </div>
     `;
-section.append(template);
+section.innerHTML = template;
+const buttonGoSignup = section.querySelector('#go-login');
+buttonGoSignup.addEventListener('click', () => {
+    navigateTo('/login');
+});
 return section;
+
 };
