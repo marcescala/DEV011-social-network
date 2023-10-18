@@ -1,23 +1,24 @@
 export const renderSignup = (navigateTo) => {
     const section = document.createElement('section');
     const template = `
-        <h3> Regístrate </h3>
-        <form>
-            <input name="email" placeholder="Escribe tu correo"></input>
-            <input name="pass" placeholder="Esribe tu contraseña"></input>
-            <button id="submit-sign-in" class="button-index"> Regístrarse </button>
+    <img class="logo" src="Images/logo-habitate.png">
+    <h1 class="signup"> Registrate </h1>
+        <form class="containers-button">
+        <input name="email" class="input-email" placeholder="Escribe tu correo"> </input>
+        <input name="pass" class="input-pass" placeholder="Esribe tu contraseña"></input>
+            <button id="submit-sign-in" class="button-indextwo"> Regístrarse </button>
         </form>
         <button id="sign-in" class="button-second"> Registrate con Google </button>
         <div>
-            <span> ¿Ya tienes cuenta? </span>
+            <span class="span-login"> ¿Ya tienes cuenta? </span>
             <button id="go-login" class="button-third"> Inicia Sesión </button>
         </div>
     `;
-section.innerHTML = template;
-const buttonGoSignup = section.querySelector('#go-login');
-buttonGoSignup.addEventListener('click', () => {
-    navigateTo('/login');
-});
-return section;
+    section.innerHTML = template;
+    const buttonGoSignup = section.querySelector('#go-login');
+    buttonGoSignup.addEventListener('click', () => {
+        navigateTo('/login');
+    });
+    return section;
 
 };

@@ -2,32 +2,83 @@ body {
     background: rgb(255,198,187);
     background: linear-gradient(270deg, rgba(255,198,187,0.8897934173669468) 0%, rgba(172,208,195,0.9037990196078431) 100%);
     text-align: center;
-};
-h1.welcome {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+/*WELCOME*/
+.welcome {
     color: rgb(48, 114, 114);
-    margin: 10%;
+    margin: 1%;
 }
 
 .button-index {
     background-color: #FFC6BB;
     color: #E7827C;
     font-weight: bold;
-    margin: 2%;
+    margin: 8%;
     padding: 1% 5%; 
     border-radius: 7px; 
     border: none;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
+
+/*LOGIN*/
+.login {
+    color: rgb(48, 114, 114);
+    margin: 0%;
+}
+
+.containers-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-email {
+    border-radius: 5px;
+    padding: 1% 5%;
+    display: block;
+    border-color: white;
+}
+
+.input-pass {
+    border-radius: 5px;
+    padding: 1% 5%;
+    display: block;
+    margin: 1%;
+    border-color: white;
+}
+
+.button-indextwo {
+    background-color: #FFC6BB;
+    color: #E7827C;
+    font-weight: bold;
+    margin: 3%;
+    padding: 1% 5%; 
+    border-radius: 7px; 
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
 .button-second {
     background-color: #abcfc3;
     color: #296662;
     font-weight: bold;
-    margin: 2%;
+    margin: 0%;
     padding: 1% 5%; 
     border-radius: 7px; 
     border: none;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
+.span-login{
+    color: rgb(48, 114, 114);
+}
+
+/*SIGNUP*/
+.signup {
+    color: rgb(48, 114, 114);
+    margin: 0%;
+}
+
 .button-third {
     background-color: transparent;
     color: #E7827C;
@@ -38,3 +89,4 @@ h1.welcome {
     border-radius: 7px; 
     border: none;
 }
+

@@ -1,7 +1,9 @@
-
 export const renderHome = (navigateTo) => {
+
     const section = document.createElement('section');
+
     let template = `
+
         <h1> Habitate </h1>
         <h2> ¿Qué quieres ver?</h2>
         <div class="buttons">
@@ -25,10 +27,9 @@ export const renderHome = (navigateTo) => {
         <div class="footer">
             <img alt="home">
             <img alt="peril">
+
         </div>
     `;
-  
     section.innerHTML = template;
     return section;
-  
   };
