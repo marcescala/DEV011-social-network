@@ -1,21 +1,40 @@
 body {
-    background-image: linear-gradient(135deg, blue); 
+    background: rgb(255,198,187);
+    background: linear-gradient(270deg, rgba(255,198,187,0.8897934173669468) 0%, rgba(172,208,195,0.9037990196078431) 100%);
     text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.welcome {
+};
+h1.welcome {
     color: rgb(48, 114, 114);
     margin: 10%;
 }
 
 .button-index {
-    background-color: pink;
-    color: rgb(243, 112, 133);
+    background-color: #FFC6BB;
+    color: #E7827C;
     font-weight: bold;
     margin: 2%;
     padding: 1% 5%; 
     border-radius: 7px; 
     border: none;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+.button-second {
+    background-color: #abcfc3;
+    color: #296662;
+    font-weight: bold;
+    margin: 2%;
+    padding: 1% 5%; 
+    border-radius: 7px; 
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+.button-third {
+    background-color: transparent;
+    color: #E7827C;
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 2%;
+    padding: 1% 5%; 
+    border-radius: 7px; 
+    border: none;
 }

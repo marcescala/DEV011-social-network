@@ -9,4 +9,4 @@ function guardar () {
         .catch((error) => {
             alert("registro erróneo");
         });
-}    
+    };

@@ -1,11 +1,11 @@
 export const renderError = () => {
     const section = document.createElement('section');
     let template = `
-        <h1>  </h1>
-        <button> Volver al login </button>
+        <h1> Está página no existe </h1>
+        <button> Regresar al inicio </button>
     `;
   
-    section.append(template);
+    section.innerHTML = template;
     return section;
   
   };
