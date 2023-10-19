@@ -3,6 +3,7 @@ import { renderLogin } from './lib/login.js';
 import { renderSignup } from './lib/signup.js';
 import { renderHome } from './lib/home.js';
 import { renderError } from './lib/error.js';
+import {callLoginGoogle}  from './lib/firebase.js';
 
 const routes = [
     { path: '/', component: renderWelcome },
@@ -15,7 +16,7 @@ const routes = [
 const defaultRoute = '/';
 const root = document.getElementById('root');
   
-function navigateTo(hash) {
+export function navigateTo(hash) {
     const route = routes.find((routeFound) => routeFound.path === hash);
     
     if (route && route.component) {
@@ -39,5 +40,3 @@ window.onpopstate = () => {
 };
   
 navigateTo(window.location.pathname || defaultRoute);
-
-
