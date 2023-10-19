@@ -4,8 +4,8 @@ export const renderSignup = (navigateTo) => {
     <img class="logo" src="Images/logo-habitate.png">
     <h1 class="signup"> Registrate </h1>
         <form class="containers-button">
-        <input name="email" class="input-email" placeholder="Escribe tu correo"> </input>
-        <input name="pass" class="input-pass" placeholder="Esribe tu contraseña"></input>
+        <input id="email" class="input-email" placeholder="Escribe tu correo"> </input>
+        <input id="pass" class="input-pass" placeholder="Esribe tu contraseña"></input>
             <button id="submit-sign-in" class="button-indextwo"> Regístrarse </button>
         </form>
         <button id="sign-in" class="button-second"> Registrate con Google </button>

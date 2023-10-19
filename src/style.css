@@ -1,15 +1,24 @@
+html{
+    height: 100%;
+}
 body {
     background: rgb(255,198,187);
-    background: linear-gradient(270deg, rgba(255,198,187,0.8897934173669468) 0%, rgba(172,208,195,0.9037990196078431) 100%);
+    background: linear-gradient(0deg, rgba(255,198,187,0.8897934173669468) 0%, rgba(172,208,195,0.9037990196078431) 100%);
     text-align: center;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 /*WELCOME*/
 .welcome {
     color: rgb(48, 114, 114);
     margin: 1%;
+    
 }
 
+.slogan {
+    color: #248881;
+    font-size: 80%;
+    margin: 0%;
+}
 .button-index {
     background-color: #FFC6BB;
     color: #E7827C;
@@ -21,7 +30,7 @@ body {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-/*LOGIN*/
+/*LOGIN y SIGNUP*/
 .login {
     color: rgb(48, 114, 114);
     margin: 0%;
@@ -73,7 +82,6 @@ body {
     color: rgb(48, 114, 114);
 }
 
-/*SIGNUP*/
 .signup {
     color: rgb(48, 114, 114);
     margin: 0%;
@@ -90,3 +98,89 @@ body {
     border: none;
 }
 
+/*HOME*/
+.title-home {
+    margin: 0%;
+    color: rgb(48, 114, 114);
+}
+.buttons {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.up {
+    display: inline-block;
+    margin: 10px;
+}
+
+.button-recipes {
+    padding: 40px 30px;
+    border-radius: 10px;
+    border: none;
+    margin-right: 10px;
+    background-color: #2f968f;
+    color:rgba(227, 233, 233, 0.973);
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    width: 100px;
+    height: 100px;
+}
+
+.button-remedies {
+    padding: 40px 30px;
+    border-radius: 10px;
+    border: none;
+    background-color: #E7827C;
+    color:rgba(227, 233, 233, 0.973);
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    width: 100px;
+    height: 100px;
+    text-align: center;
+}
+
+.button-habits {
+    padding: 40px 30px;
+    border-radius: 10px;
+    border: none;
+    margin-right: 10px;
+    background-color: #E7827C;
+    color:rgba(227, 233, 233, 0.973);
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    width: 100px;
+    height: 100px;
+    text-align: center;
+}
+
+.button-curiosities {
+        padding: 40px 30px;
+        border-radius: 10px;
+        border: none;
+        background-color: #2f968f;
+        color:rgba(227, 233, 233, 0.973);
+        font-weight: bold;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        width: 100px;
+        height: 100px;
+        text-align: center;
+}
+
+.footer {
+    position: fixed;
+    padding: 10px;
+    bottom: 0;
+    width: 100%;
+}
+
+.image-home {
+    height: 50px;
+    width: 50px;
+}
+
+.image-perfil {
+    height: 40px;
+    width: 40px;
+}

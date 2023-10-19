@@ -3,6 +3,8 @@ export const renderWelcome = (navigateTo) => {
     let template = `
         <img class="logo" src="Images/logo-habitate.png">
         <h1 class="welcome"> Bienvenida </h1>
+        <p class="slogan"> Alimenta tu bienestar </p>
+        <p class="slogan"> Alimenta tu comunidad </p>
         <button id='go-login' class="button-index"> Seguir </button>
 
     `;

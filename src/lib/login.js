@@ -4,8 +4,8 @@ export const renderLogin = (navigateTo) => {
     <img class="logo" src="Images/logo-habitate.png">
     <h1 class="login"> Ingresa </h1>
         <form class="containers-button">
-            <input name="email" class="input-email" placeholder="Escribe tu correo"> </input>
-            <input name="pass" class="input-pass" placeholder="Esribe tu contraseña"></input>
+            <input id="email" class="input-email" placeholder="Escribe tu correo"> </input>
+            <input id="pass" class="input-pass" placeholder="Esribe tu contraseña"></input>
             <button id="submit" class="button-indextwo"> Inicia sesión </button>
         </form>
         <button id="go-google" class="button-second"> Ingresar con Google </button>
