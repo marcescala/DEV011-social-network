@@ -36,3 +36,10 @@ export const renderHome = (navigateTo) => {
     section.innerHTML = template;
     return section;
 };
+
+
+
+
+
+
+

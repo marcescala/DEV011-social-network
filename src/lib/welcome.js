@@ -10,7 +10,6 @@ export const renderWelcome = (navigateTo) => {
     `;
     section.innerHTML = template;
     const buttonGoLogin = section.querySelector('#go-login');
-    console.log(buttonGoLogin);
     buttonGoLogin.addEventListener('click', () => {
         navigateTo('/login');
     });
