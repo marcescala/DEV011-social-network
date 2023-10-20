@@ -18,6 +18,7 @@ const root = document.getElementById('root');
   
 export function navigateTo(hash) {
     const route = routes.find((routeFound) => routeFound.path === hash);
+    
     if (route && route.component) {
       window.history.pushState(
         {},

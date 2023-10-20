@@ -16,11 +16,29 @@ export const renderSignup = (navigateTo) => {
             <button id="go-login" class="button-third"> Inicia Sesión </button>
         </div>
     `;
-section.innerHTML = template;
-const buttonGoSignup = section.querySelector('#go-login');
-buttonGoSignup.addEventListener('click', () => {
-    navigateTo('/login');
-});
-return section;
+    section.innerHTML = template;
+
+    const email = section.querySelector('#email-signup');
+    const password = section.querySelector('#pass-signup');
+    const buttonSignup = section.querySelector('#submit-sign-in');
+    buttonSignup.addEventListener('click', (event) => {
+        event.preventDefault()
+        submitNewUserInfo(email.value, password.value)
+    //.then(()=> {
+      //  navigateTo('/home');
+    //})
+    //.catch(()=> {
+      //  console.log('error: ', error.message)
+    //});
+    });
+    const buttonGoSignup = section.querySelector('#go-login');
+    buttonGoSignup.addEventListener('click', () => {
+        navigateTo('/login');
+    });
+    const buttonGoogleS = section.querySelector('#go-google-s');
+    buttonGoogleS.addEventListener('click', () => {
+        callLoginGoogle();
+    });
+    return section;
 
 };

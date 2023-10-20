@@ -30,14 +30,11 @@ export const renderHome = (navigateTo) => {
         <div class="footer">
             <img class="image-home" src="Images/image-home.png">
             <img class="image-perfil" src="Images/image-perfil.png">
-
         </div>
     `;
     section.innerHTML = template;
     return section;
 };
-
-
 
 
 
