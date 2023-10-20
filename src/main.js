@@ -12,7 +12,7 @@ const routes = [
     { path: '/home', component: renderHome },
     { path: '/error', component: renderError },
 ];
-  
+
 const defaultRoute = '/';
 const root = document.getElementById('root');
   
@@ -25,7 +25,7 @@ export function navigateTo(hash) {
         route.path,
         window.location.origin + route.path,
       );
-  
+
       if (root.firstChild) {
         root.removeChild(root.firstChild);
       }
@@ -34,9 +34,9 @@ export function navigateTo(hash) {
       navigateTo('/error');
     }
 };
-  
+
 window.onpopstate = () => {
     navigateTo(window.location.pathname);
 };
-  
+
 navigateTo(window.location.pathname || defaultRoute);

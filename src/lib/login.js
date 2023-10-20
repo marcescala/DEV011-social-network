@@ -31,4 +31,3 @@ export const renderLogin = (navigateTo) => {
 
     return section;
 };
-
