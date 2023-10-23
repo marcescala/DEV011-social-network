@@ -1,4 +1,4 @@
-import {callLoginGoogle}  from './firebase.js';
+import { callLoginGoogle, submitUserInfo }  from './index';
 
 export const renderLogin = (navigateTo) => {
     const section = document.createElement('section');
@@ -18,16 +18,38 @@ export const renderLogin = (navigateTo) => {
     `;
     section.innerHTML= template;
 
+    const email = section.querySelector('#email');
+    const password = section.querySelector('#pass');
+    const buttonSubmit = section.querySelector('#submit');
+    console.log(buttonSubmit);
+    buttonSubmit.addEventListener('click', (event) => {
+        console.log(buttonSubmit)
+        event.preventDefault()
+        submitUserInfo (email.value, password.value)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            navigateTo('/home')
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log('error: ', error.message);
+            alert("no se pudo ingresar")
+            // ..
+          });
+    });
+
+    const buttonSubmitGoogle = section.querySelector('#go-google');
+    console.log(buttonSubmitGoogle);
+    buttonSubmitGoogle.addEventListener('click', () => {
+        callLoginGoogle();
+    });
+
     const buttonGoSignup = section.querySelector('#go-signup');
     buttonGoSignup.addEventListener('click', () => {
         navigateTo('/signup');
     });
-
-    const buttonSubmit = section.querySelector('#go-google');
-    console.log(buttonSubmit);
-    buttonSubmit.addEventListener('click', () => {
-        callLoginGoogle();
-    });
-
     return section;
 };
