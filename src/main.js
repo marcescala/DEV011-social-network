@@ -3,12 +3,12 @@ import { renderLogin } from './lib/login.js';
 import { renderSignup } from './lib/signup.js';
 import { renderHome } from './lib/home.js';
 import { renderError } from './lib/error.js';
-import {callLoginGoogle}  from './lib/firebase.js';
+//import { callLoginGoogle }  from './lib/firebase.js';
 
 const routes = [
     { path: '/', component: renderWelcome },
-    { path: '/login', component: renderLogin },
     { path: '/signup', component: renderSignup },
+    { path: '/login', component: renderLogin },
     { path: '/home', component: renderHome },
     { path: '/error', component: renderError },
 ];

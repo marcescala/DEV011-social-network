@@ -1,4 +1,6 @@
-import {callLoginGoogle, submitNewUserInfo}  from './firebase.js';
+import { auth } from './firebase';
+import {callLoginGoogle, submitNewUserInfo}  from './index';
+
 
 export const renderSignup = (navigateTo) => {
     const section = document.createElement('section');
@@ -18,18 +20,26 @@ export const renderSignup = (navigateTo) => {
     `;
     section.innerHTML = template;
 
-    const email = section.querySelector('#email-signup');
-    const password = section.querySelector('#pass-signup');
+    const email = section.querySelector('#email');
+    const password = section.querySelector('#pass');
     const buttonSignup = section.querySelector('#submit-sign-in');
     buttonSignup.addEventListener('click', (event) => {
         event.preventDefault()
         submitNewUserInfo(email.value, password.value)
-    //.then(()=> {
-      //  navigateTo('/home');
-    //})
-    //.catch(()=> {
-      //  console.log('error: ', error.message)
-    //});
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            console.log({user});
+            navigateTo('/home')
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log('error: ', error.message);
+            alert("no se pudo ingresar")
+            // ..
+          });
     });
     const buttonGoSignup = section.querySelector('#go-login');
     buttonGoSignup.addEventListener('click', () => {
@@ -37,7 +47,19 @@ export const renderSignup = (navigateTo) => {
     });
     const buttonGoogleS = section.querySelector('#go-google-s');
     buttonGoogleS.addEventListener('click', () => {
-        callLoginGoogle();
+        callLoginGoogle()
+        .then(() => {
+            navigateTo('/home')
+          }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // ...
+          })
     });
     return section;
 
