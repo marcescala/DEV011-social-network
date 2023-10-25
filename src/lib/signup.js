@@ -1,5 +1,4 @@
-import { auth } from './firebase';
-import {callLoginGoogle, submitNewUserInfo}  from './index';
+import { callLoginGoogle, submitNewUserInfo }  from './index';
 
 
 export const renderSignup = (navigateTo) => {
@@ -48,19 +47,17 @@ export const renderSignup = (navigateTo) => {
     const buttonGoogleS = section.querySelector('#go-google-s');
     buttonGoogleS.addEventListener('click', () => {
         callLoginGoogle()
-        .then(() => {
+        .then((result) => {
             navigateTo('/home')
+            const user = result.user;
+            console.log(user)
           }).catch((error) => {
-            // Handle Errors here.
             const errorCode = error.code;
             const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.customData.email;
-            // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
+            const email = error.email;
             // ...
           })
     });
+   
     return section;
-
 };

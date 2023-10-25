@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 //import { getFirestore } from "firebase/firestore";
-import { getRedirectResult, getAuth, signInWithRedirect, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-export { getRedirectResult, getAuth, signInWithRedirect, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } ;
+import { signInWithPopup, getRedirectResult, getAuth, signInWithRedirect, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+export { signInWithPopup, getRedirectResult, getAuth, signInWithRedirect, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } ;
 const firebaseConfig = {
   apiKey: "AIzaSyBr5Z4iOCJqUFUVsIJYjm4-fS6ZYJTalls",
   authDomain: "habitate-5e51d.firebaseapp.com",

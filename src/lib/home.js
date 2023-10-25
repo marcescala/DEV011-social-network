@@ -3,7 +3,7 @@ export const renderHome = (navigateTo) => {
     const section = document.createElement('section');
 
     let template = `
-    <img class="logo" src="Images/logo-habitate.png">
+    <img class="logo" src="Images/logo_habitate_largo.png">
         <h2 class="title-home"> ¿Qué quieres ver?</h2>
         <div class="buttons">
            <div class="up">

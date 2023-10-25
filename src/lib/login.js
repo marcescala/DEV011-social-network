@@ -44,7 +44,17 @@ export const renderLogin = (navigateTo) => {
     const buttonSubmitGoogle = section.querySelector('#go-google');
     console.log(buttonSubmitGoogle);
     buttonSubmitGoogle.addEventListener('click', () => {
-        callLoginGoogle();
+        callLoginGoogle()
+        .then((result) => {
+            navigateTo('/home')
+            const user = result.user;
+            console.log(user)
+          }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            const email = error.email;
+            // ...
+          })
     });
 
     const buttonGoSignup = section.querySelector('#go-signup');

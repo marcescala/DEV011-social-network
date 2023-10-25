@@ -1,10 +1,9 @@
-//import { navigateTo } from "../main";
-import { getRedirectResult, getAuth, signInWithRedirect, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "./firebase";
+import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "./firebase.js";
 import { auth, provider } from './firebase';
 
-//Función que redirecciona al acceso con Google
-export function callLoginGoogle() {
-    return signInWithRedirect(auth, provider)
+  //Función que redirecciona al acceso con Google
+  export function callLoginGoogle () {
+    return signInWithPopup(auth, provider)
   };
   
   //Función que crea un nuevo usuario con firebase y utiliza email y password
