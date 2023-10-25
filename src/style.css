@@ -116,7 +116,7 @@ body {
 }
 
 .button-recipes {
-    padding: 40px 30px;
+    padding: 20px 20px;
     border-radius: 10px;
     border: none;
     margin-right: 10px;
@@ -127,9 +127,13 @@ body {
     width: 100px;
     height: 100px;
 }
+.home-images {
+    width: 40px;
+    height: 40px;
+}
 
 .button-remedies {
-    padding: 40px 30px;
+    padding: 20px 20px;
     border-radius: 10px;
     border: none;
     background-color: #E7827C;
@@ -142,7 +146,7 @@ body {
 }
 
 .button-habits {
-    padding: 40px 30px;
+    padding: 20px 20px;
     border-radius: 10px;
     border: none;
     margin-right: 10px;
@@ -156,7 +160,7 @@ body {
 }
 
 .button-curiosities {
-        padding: 40px 30px;
+        padding: 20px 20px;
         border-radius: 10px;
         border: none;
         background-color: #2f968f;
@@ -183,4 +187,8 @@ body {
 .image-perfil {
     height: 40px;
     width: 40px;
+}
+.button-home {
+    background-color: transparent;
+    border: none;
 }
