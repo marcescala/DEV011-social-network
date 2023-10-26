@@ -1,4 +1,6 @@
+
 import { callLoginGoogle, submitUserInfo } from './index.js';
+
 
 export const renderLogin = (navigateTo) => {
   const section = document.createElement('section');
@@ -62,3 +64,4 @@ export const renderLogin = (navigateTo) => {
 
   return section;
 };
+

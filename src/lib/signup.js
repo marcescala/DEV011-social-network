@@ -1,4 +1,6 @@
+
 import { callLoginGoogle, submitNewUserInfo } from './index.js';
+
 
 export const renderSignup = (navigateTo) => {
   const section = document.createElement('section');
@@ -18,6 +20,7 @@ export const renderSignup = (navigateTo) => {
     `;
   section.innerHTML = template;
 
+
   const email = section.querySelector('#email');
   const password = section.querySelector('#pass');
   const buttonSignup = section.querySelector('#submit-sign-in');
@@ -28,6 +31,7 @@ export const renderSignup = (navigateTo) => {
         // Signed in
         const user = userCredential.user;
         console.log(user);
+
 
         navigateTo('/home');
         // ...
