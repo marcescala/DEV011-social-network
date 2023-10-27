@@ -27,7 +27,7 @@ export const renderSignup = (navigateTo) => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
+        console.log(user.email);
 
         navigateTo('/home');
         // ...
