@@ -1,3 +1,4 @@
+
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore, collection, addDoc, getDocs, onSnapshot, orderBy, query, 
@@ -37,4 +38,6 @@ export const app = initializeApp(firebaseConfig);
 
 export const provider = new GoogleAuthProvider();
 export const auth = getAuth();
+
 export const db = getFirestore(app);
+
