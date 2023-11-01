@@ -1,7 +1,7 @@
 import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
   auth, provider, db, addDoc, collection, getDocs, onSnapshot, orderBy, query,
-  updateDoc, arrayUnion, arrayRemove, doc, getDoc,
+  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc,
 } from './firebase.js';
 
 export { auth, db, doc };
@@ -28,7 +28,7 @@ export const addPost = (message, postType, userID) => {
     message,
     postType,
     usuario: userID,
-    likes: {},
+    likes: [],
     date: Date.now(),
   });
 };
@@ -41,9 +41,30 @@ export const q = query(postCollection, orderBy('date', 'desc'));
 // Función para poder ver la data en tiempo real
 export const renderRealTime = (callback) => onSnapshot(q, callback);
 
-// Función para agregar los likes en los comentarios
+// Función para borrar un post
+export const deletePost = (id) => {
+  deleteDoc(doc(db, 'posts', id));
+};
 
-export const addLike = (docRef, userID) => {
+// Pruebas para la función del like
+
+export const addLike = (id, userID) => {
+  const docRef = doc(db, 'posts', id);
+  updateDoc(docRef, {
+    likes: arrayUnion(userID),
+  });
+};
+
+export const removeLike = (id, userID) => {
+  const docRef = doc(db, 'posts', id);
+  updateDoc(docRef, {
+    likes: arrayRemove(userID),
+  });
+};
+
+// Función que nos sugirió chat GPT
+
+/* export const addLike = (docRef) => {
   getDoc(docRef)
     .then(() => {
       if (doc.exists) {
@@ -71,10 +92,11 @@ export const addLike = (docRef, userID) => {
           console.log('El usuario ya ha dado click.');
         }
       } else {
-        console.log('El documento no existe.');
+        // console.log('El documento no existe.');
       }
     })
     .catch((error) => {
       console.error('Error al obtener el documento:', error);
     });
 };
+*/

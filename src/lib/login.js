@@ -30,12 +30,12 @@ export const renderLogin = (navigateTo) => {
     submitUserInfo(email.value, password.value)
       .then((userCredential) => {
         navigateTo('/home');
-        const user = userCredential.user;
-        console.log(user);
+        /* const user = userCredential.user;
+        console.log(user); */
       })
       .catch((error) => {
         // Aquí vamos a manejar los errores
-        console.log(error.message);
+        // console.log(error.message);
 
         if (error.code === 'auth/invalid-login-credentials') {
           alert('No se ha podido iniciar sesión. La contraseña es inválida');
@@ -51,12 +51,12 @@ export const renderLogin = (navigateTo) => {
       .then((result) => {
         navigateTo('/home');
         // const credential = GoogleAuthProvider.credentialFromResult(result);
-        const user = result.user;
-        console.log(user);
+        /* const user = result.user;
+        console.log(user); */
       })
       .catch((error) => {
         // Aquí vamos a manejar los errores
-        console.log(error.message);
+        // console.log(error.message);
       });
   });
 
