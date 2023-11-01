@@ -1,5 +1,5 @@
 import {
-  addPost, renderRealTime, auth, db, doc, deletePost, addLike, removeLike,
+  addPost, renderRealTime, auth, db, doc, deletePost, addLike, removeLike, obtenerUsuario,
 } from './index.js';
 
 export const renderWall = (navigateTo) => {
@@ -81,14 +81,19 @@ export const renderWall = (navigateTo) => {
       const apple = document.createElement('img');
       apple.src = 'Images/manzana_like.png';
       apple.className = 'img-like';
+      const counter = document.createElement('span');
+      counter.innerText = '1';
       btnLike.append(apple);
-      post.append(postMessage, btnEdit, btnDelete, btnLike);
+      post.append(postMessage, btnEdit, btnDelete, btnLike, counter);
       postSection.append(post);
       btnDelete.addEventListener('click', () => {
         deletePost(docID);
       });
       btnLike.addEventListener('click', () => {
-        addLike(docID);
+        // const idPrueba = 'Kb7g8rbP5Lfr1yZLwrse0OMGQFq2';
+        const prueba = obtenerUsuario();
+        console.log(prueba.uid);
+        addLike(docID, prueba.uid);
       });
     });
   });
