@@ -1,3 +1,4 @@
+import { async } from 'regenerator-runtime';
 import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
   auth, provider, db, addDoc, collection, getDocs, onSnapshot, orderBy, query,
@@ -33,6 +34,12 @@ export const addPost = (message, postType, userID) => {
   });
 };
 
+export const obtenerUsuario = () => {
+  const user = auth.currentUser;
+  if (user !== null) return user;
+  return 'no hay usuarios';
+};
+
 // Función para poder traer los post de la base de datos
 export const querySnapshot = getDocs(postCollection);
 
@@ -48,11 +55,24 @@ export const deletePost = (id) => {
 
 // Pruebas para la función del like
 
-export const addLike = (id, userID) => {
+export const addLike = async (id, userID) => {
   const docRef = doc(db, 'posts', id);
-  updateDoc(docRef, {
-    likes: arrayUnion(userID),
-  });
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const likes = docSnap.data().likes;
+    if (!likes.includes(userID)) {
+      // Agrega el UID del usuario al array utilizando arrayUnion
+      updateDoc(docRef, {
+        likes: arrayUnion(userID),
+      })
+        .then(() => {
+          // Verifica el número de usuarios que han dado click
+          const numLikes = likes.length + 1;
+          console.log(`Número de usuarios que han dado click: ${numLikes}`);
+        });
+    }
+  }
 };
 
 export const removeLike = (id, userID) => {
