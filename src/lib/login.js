@@ -1,13 +1,13 @@
-import { callLoginGoogle, submitUserInfo }  from './index';
+import { callLoginGoogle, submitUserInfo } from './index.js';
 
 export const renderLogin = (navigateTo) => {
-    const section = document.createElement('section');
-    const template = `
+  const section = document.createElement('section');
+  const template = `
         <img class="logo" src="Images/logo-habitate.png">
         <h1 class="login"> Ingresa </h1>
         <form class="containers-button">
-            <input id="email" class="input-email" placeholder="Escribe tu correo"> </input>
-            <input id="pass" class="input-pass" placeholder="Esribe tu contraseña"></input>
+            <input type="email" id="email" class="input-email" placeholder="Escribe tu correo"> </input>
+            <input type="password" id="pass" class="input-pass" placeholder="Esribe tu contraseña"></input>
             <button id="submit" class="button-indextwo"> Inicia sesión </button>
         </form>
         <button id="go-google" class="button-second"> Ingresar con Google </button>
@@ -16,50 +16,49 @@ export const renderLogin = (navigateTo) => {
             <button id="go-signup" class="button-third"> Regístrate </button>   
         </div>
     `;
-    section.innerHTML= template;
+  section.innerHTML = template;
 
-    const email = section.querySelector('#email');
-    const password = section.querySelector('#pass');
-    const buttonSubmit = section.querySelector('#submit');
-    console.log(buttonSubmit);
-    buttonSubmit.addEventListener('click', (event) => {
-        console.log(buttonSubmit)
-        event.preventDefault()
-        submitUserInfo (email.value, password.value)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            navigateTo('/home')
-            // ...
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log('error: ', error.message);
-            alert("no se pudo ingresar")
-            // ..
-          });
-    });
+  const buttonGoSignup = section.querySelector('#go-signup');
+  buttonGoSignup.addEventListener('click', () => {
+    navigateTo('/signup');
+  });
+  const email = section.querySelector('#email');
+  const password = section.querySelector('#pass');
+  const buttonLogin = section.querySelector('#submit');
+  buttonLogin.addEventListener('click', (event) => {
+    event.preventDefault();
+    submitUserInfo(email.value, password.value)
+      .then((userCredential) => {
+        navigateTo('/home');
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        // Aquí vamos a manejar los errores
+        console.log(error.message);
 
-    const buttonSubmitGoogle = section.querySelector('#go-google');
-    console.log(buttonSubmitGoogle);
-    buttonSubmitGoogle.addEventListener('click', () => {
-        callLoginGoogle()
-        .then((result) => {
-            navigateTo('/home')
-            const user = result.user;
-            console.log(user)
-          }).catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            const email = error.email;
-            // ...
-          })
-    });
+        if (error.code === 'auth/invalid-login-credentials') {
+          alert('No se ha podido iniciar sesión. La contraseña es inválida');
+        } else if (error.code === 'auth/invalid-email') {
+          alert('No se ha podido iniciar sesión. Ingresa un correo válido');
+        }
+      });
+  });
 
-    const buttonGoSignup = section.querySelector('#go-signup');
-    buttonGoSignup.addEventListener('click', () => {
-        navigateTo('/signup');
-    });
-    return section;
+  const buttonGoogleL = section.querySelector('#go-google');
+  buttonGoogleL.addEventListener('click', () => {
+    callLoginGoogle()
+      .then((result) => {
+        navigateTo('/home');
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        // Aquí vamos a manejar los errores
+        console.log(error.message);
+      });
+  });
+
+  return section;
 };
