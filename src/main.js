@@ -5,7 +5,6 @@ import { renderHome } from './lib/home.js';
 import { renderWall } from './lib/wall.js';
 import { renderError } from './lib/error.js';
 
-
 const routes = [
   { path: '/', component: renderWelcome },
   { path: '/login', component: renderLogin },
@@ -13,7 +12,7 @@ const routes = [
   { path: '/home', component: renderHome },
   { path: '/wall', component: renderWall },
   { path: '/error', component: renderError },
-
+];
 
 const defaultRoute = '/';
 const root = document.getElementById('root');

@@ -1,12 +1,25 @@
-
 import { initializeApp } from 'firebase/app';
-// import { getFirestore } from "firebase/firestore";
 import {
-  getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
+  getFirestore, collection, addDoc, getDocs, onSnapshot, orderBy, query, updateDoc, arrayUnion, arrayRemove, doc, getDoc,
+} from 'firebase/firestore';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
 } from 'firebase/auth';
 
 export {
-  getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
+  getAuth,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  collection,
+  addDoc,
+  getDocs, onSnapshot, orderBy, query,
+  updateDoc, arrayUnion, arrayRemove, doc, getDoc,
 };
 
 const firebaseConfig = {
@@ -23,4 +36,4 @@ export const app = initializeApp(firebaseConfig);
 
 export const provider = new GoogleAuthProvider();
 export const auth = getAuth();
-
+export const db = getFirestore(app);
