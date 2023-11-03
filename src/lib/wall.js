@@ -1,5 +1,5 @@
 import {
-  addPost, renderRealTime, auth, db, doc, deletePost, addLike, removeLike,
+  addPost, renderRealTime, auth, db, doc, deletePost, addLike, removeLike, authUser,
 } from './index.js';
 
 export const renderWall = (navigateTo) => {
@@ -46,16 +46,10 @@ export const renderWall = (navigateTo) => {
     const message = wallSection.querySelector('#inPost');
     const postTypeSel = wallSection.querySelector('#select-type');
     console.log('funciona el boton', message, postTypeSel);
-    // primero vamos a autenticar que el usuario está loggeado
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        // El usuario está autenticado, puedes acceder a sus datos
-        const userID = user.uid;
-        addPost(message.value, postTypeSel.value, userID);
-        message.value = '';
-      }
-      // console.log('No hay usuario autenticado.');
-    });
+    const user = authUser();
+    const userID = user.uid;
+    addPost(message.value, postTypeSel.value, userID);
+    message.value = '';
   });
 
   renderRealTime((querySnapshot) => {
@@ -82,14 +76,17 @@ export const renderWall = (navigateTo) => {
       const apple = document.createElement('img');
       apple.src = 'Images/manzana_like.png';
       apple.className = 'img-like';
+      const counter = document.createElement('span');
+      counter.innerText = element.data().likes.length;
       btnLike.append(apple);
-      post.append(postMessage, btnEdit, btnDelete, btnLike);
+      post.append(postMessage, btnEdit, btnDelete, btnLike, counter);
       postSection.append(post);
       btnDelete.addEventListener('click', () => {
         deletePost(docID);
       });
       btnLike.addEventListener('click', () => {
-        addLike(docID);
+        const user = authUser();
+        addLike(docID, user.uid);
       });
     });
   });

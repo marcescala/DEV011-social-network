@@ -41,6 +41,12 @@ export const q = query(postCollection, orderBy('date', 'desc'));
 // Función para poder ver la data en tiempo real
 export const renderRealTime = (callback) => onSnapshot(q, callback);
 
+export const authUser = () => {
+  const user = auth.currentUser;
+  if (user !== null) return user;
+  return 'no hay usuarios';
+};
+
 // Función para borrar un post
 export const deletePost = (id) => {
   deleteDoc(doc(db, 'posts', id));
@@ -48,15 +54,29 @@ export const deletePost = (id) => {
 
 // Pruebas para la función del like
 
-export const addLike = (id, userID) => {
+export const addLike = async (id, userID) => {
   const docRef = doc(db, 'posts', id);
-  updateDoc(docRef, {
-    likes: arrayUnion(userID),
-  });
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const likes = docSnap.data().likes;
+    if (!likes.includes(userID)) {
+      // Agrega el UID del usuario al array utilizando arrayUnion
+      updateDoc(docRef, {
+        likes: arrayUnion(userID),
+      });
+    } else {
+      updateDoc(docRef, {
+        likes: arrayRemove(userID),
+      });
+    }
+  }
 };
 
 export const removeLike = (id, userID) => {
   const docRef = doc(db, 'posts', id);
+  // cosnt likes = docRef;
+  console.log(docRef);
   updateDoc(docRef, {
     likes: arrayRemove(userID),
   });
