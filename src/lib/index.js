@@ -1,4 +1,3 @@
-import { async } from 'regenerator-runtime';
 import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
   auth, provider, db, addDoc, collection, getDocs, onSnapshot, orderBy, query,
@@ -24,17 +23,27 @@ export function submitUserInfo(email, password) {
   return signInWithEmailAndPassword(auth, email, password);
 }
 
+// Función cerrar sesión
+export function cerrarSesion() {
+  auth.signOut()
+    .then(() => {
+      console.log('cierra-sesion');
+    }).catch((error) => {
+      console.log(error);
+    });
+}
+
 export const addPost = (message, postType, userID) => {
   addDoc(postCollection, {
     message,
     postType,
-    usuario: userID,
+    user: userID,
     likes: [],
     date: Date.now(),
   });
 };
 
-export const obtenerUsuario = () => {
+export const authUser = () => {
   const user = auth.currentUser;
   if (user !== null) return user;
   return 'no hay usuarios';
@@ -65,20 +74,20 @@ export const addLike = async (id, userID) => {
       // Agrega el UID del usuario al array utilizando arrayUnion
       updateDoc(docRef, {
         likes: arrayUnion(userID),
-      })
-        .then(() => {
-          // Verifica el número de usuarios que han dado click
-          const numLikes = likes.length + 1;
-          console.log(`Número de usuarios que han dado click: ${numLikes}`);
-        });
+      });
+    } else {
+      updateDoc(docRef, {
+        likes: arrayRemove(userID),
+      });
     }
   }
 };
 
-export const removeLike = (id, userID) => {
+export const editPost = (id, message, postType) => {
   const docRef = doc(db, 'posts', id);
   updateDoc(docRef, {
-    likes: arrayRemove(userID),
+    message,
+    postType,
   });
 };
 

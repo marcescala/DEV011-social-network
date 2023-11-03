@@ -1,62 +1,68 @@
 import {
-  addPost, renderRealTime, auth, db, doc, deletePost, addLike, removeLike, obtenerUsuario,
+  addPost, renderRealTime, deletePost, addLike, authUser, editPost,
 } from './index.js';
 
 export const renderWall = (navigateTo) => {
   const section = document.createElement('section');
   const template = `
-          <img class="logo" src="Images/logo-habitate.png">
+        <body class="wallbody">
+          <img class="logo-wall" src="Images/logo_habitate_largo.png">
+          <section class="wallSectionInput" >
+          </section>
           <section class="wallSection" >
           </section>
-          <div class="footer">
+        </body>
+        <footer class="footer">
             <button id="go-home" class="button-home"  > 
                 <img src="Images/home_habitate.png" class="image-home">
             </button> 
             <button id="go-profile" class="button-home"  > 
                 <img src="Images/perfil_habitate.png" class="image-home">
             </button> 
-        </div>
+        </footer>
       `;
 
   // Por ahora estoy creando aquí la sección de los post para poder empezar, posteriormente irá en una ventana pop up
   section.innerHTML = template;
+  const wallSectionInput = section.querySelector('.wallSectionInput');
   const wallSection = section.querySelector('.wallSection');
   const inputPost = document.createElement('input');
   inputPost.id = 'inPost';
+  inputPost.className = 'inPost';
+  inputPost.placeholder = 'Déjanos tu recomendación';
   const postType = document.createElement('select');
   postType.id = 'select-type';
+  postType.className = 'select-type';
   const option1 = document.createElement('option');
   option1.value = 'receta';
-  option1.text = 'receta';
+  option1.text = 'Receta';
   const option2 = document.createElement('option');
   option2.value = 'remedio';
-  option2.text = 'remedio';
+  option2.text = 'Remedio';
   const option3 = document.createElement('option');
   option3.value = 'habito';
-  option3.text = 'hábito';
+  option3.text = 'Hábito';
   postType.append(option1, option2, option3);
   const buttonSendPost = document.createElement('button');
   buttonSendPost.id = 'button-sendPost';
+  buttonSendPost.className = 'button-sendPost';
   buttonSendPost.textContent = 'Publicar';
   const postSection = document.createElement('article');
   postSection.className = 'post-section';
-  wallSection.append(inputPost, postType, buttonSendPost, postSection);
+  wallSectionInput.append(inputPost);
+  wallSection.append(postType, buttonSendPost, postSection);
 
-  buttonSendPost.addEventListener('click', () => {
-    const message = wallSection.querySelector('#inPost');
+  const originalEventListener = () => {
+    const message = wallSectionInput.querySelector('#inPost');
     const postTypeSel = wallSection.querySelector('#select-type');
     console.log('funciona el boton', message, postTypeSel);
-    // primero vamos a autenticar que el usuario está loggeado
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        // El usuario está autenticado, puedes acceder a sus datos
-        const userID = user.uid;
-        addPost(message.value, postTypeSel.value, userID);
-        message.value = '';
-      }
-      // console.log('No hay usuario autenticado.');
-    });
-  });
+    const user = authUser();
+    const userID = user.uid;
+    addPost(message.value, postTypeSel.value, userID);
+    message.value = '';
+  };
+  buttonSendPost.addEventListener('click', originalEventListener);
+
   renderRealTime((querySnapshot) => {
     postSection.textContent = '';
     querySnapshot.forEach((element) => {
@@ -82,7 +88,7 @@ export const renderWall = (navigateTo) => {
       apple.src = 'Images/manzana_like.png';
       apple.className = 'img-like';
       const counter = document.createElement('span');
-      counter.innerText = '1';
+      counter.innerText = element.data().likes.length;
       btnLike.append(apple);
       post.append(postMessage, btnEdit, btnDelete, btnLike, counter);
       postSection.append(post);
@@ -90,10 +96,23 @@ export const renderWall = (navigateTo) => {
         deletePost(docID);
       });
       btnLike.addEventListener('click', () => {
-        // const idPrueba = 'Kb7g8rbP5Lfr1yZLwrse0OMGQFq2';
-        const prueba = obtenerUsuario();
-        console.log(prueba.uid);
-        addLike(docID, prueba.uid);
+        const user = authUser();
+        addLike(docID, user.uid);
+      });
+      btnEdit.addEventListener('click', () => {
+        wallSectionInput.querySelector('#inPost').value = element.data().message;
+        buttonSendPost.textContent = 'Guardar';
+        buttonSendPost.removeEventListener('click', originalEventListener);
+        const buttonEditPost = () => {
+          const message = wallSectionInput.querySelector('#inPost');
+          const postTypeSel = wallSection.querySelector('#select-type');
+          editPost(docID, message.value, postTypeSel.value);
+          message.value = '';
+          buttonSendPost.removeEventListener('click', buttonEditPost);
+          buttonSendPost.addEventListener('click', originalEventListener);
+          buttonSendPost.textContent = 'Publicar';
+        };
+        buttonSendPost.addEventListener('click', buttonEditPost);
       });
     });
   });

@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import {
-  getFirestore, collection, addDoc, getDocs, onSnapshot, orderBy, query, 
+  getFirestore, collection, addDoc, getDocs, onSnapshot, orderBy, query,
   updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc,
 } from 'firebase/firestore';
 import {
@@ -9,6 +9,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from 'firebase/auth';
 
 export {
@@ -20,7 +21,7 @@ export {
   collection,
   addDoc,
   getDocs, onSnapshot, orderBy, query,
-  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc, 
+  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc, signOut,
 };
 
 const firebaseConfig = {
@@ -39,4 +40,3 @@ export const provider = new GoogleAuthProvider();
 export const auth = getAuth();
 
 export const db = getFirestore(app);
-

@@ -28,7 +28,7 @@ export const renderLogin = (navigateTo) => {
   buttonLogin.addEventListener('click', (event) => {
     event.preventDefault();
     submitUserInfo(email.value, password.value)
-      .then((userCredential) => {
+      .then(() => {
         navigateTo('/home');
         /* const user = userCredential.user;
         console.log(user); */
@@ -48,13 +48,13 @@ export const renderLogin = (navigateTo) => {
   const buttonGoogleL = section.querySelector('#go-google');
   buttonGoogleL.addEventListener('click', () => {
     callLoginGoogle()
-      .then((result) => {
+      .then(() => {
         navigateTo('/home');
         // const credential = GoogleAuthProvider.credentialFromResult(result);
         /* const user = result.user;
         console.log(user); */
       })
-      .catch((error) => {
+      .catch(() => {
         // Aquí vamos a manejar los errores
         // console.log(error.message);
       });
