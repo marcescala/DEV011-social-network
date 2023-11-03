@@ -1,7 +1,7 @@
 import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
   auth, provider, db, addDoc, collection, getDocs, onSnapshot, orderBy, query,
-  updateDoc, arrayUnion, arrayRemove, doc, getDoc,
+  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc,
 } from './firebase.js';
 
 export { auth, db, doc };
@@ -23,14 +23,30 @@ export function submitUserInfo(email, password) {
   return signInWithEmailAndPassword(auth, email, password);
 }
 
+// Función cerrar sesión
+export function cerrarSesion() {
+  auth.signOut()
+    .then(() => {
+      console.log('cierra-sesion');
+    }).catch((error) => {
+      console.log(error);
+    });
+}
+
 export const addPost = (message, postType, userID) => {
   addDoc(postCollection, {
     message,
     postType,
-    usuario: userID,
-    likes: {},
+    user: userID,
+    likes: [],
     date: Date.now(),
   });
+};
+
+export const authUser = () => {
+  const user = auth.currentUser;
+  if (user !== null) return user;
+  return 'no hay usuarios';
 };
 
 // Función para poder traer los post de la base de datos
@@ -41,9 +57,43 @@ export const q = query(postCollection, orderBy('date', 'desc'));
 // Función para poder ver la data en tiempo real
 export const renderRealTime = (callback) => onSnapshot(q, callback);
 
-// Función para agregar los likes en los comentarios
+// Función para borrar un post
+export const deletePost = (id) => {
+  deleteDoc(doc(db, 'posts', id));
+};
 
-export const addLike = (docRef, userID) => {
+// Pruebas para la función del like
+
+export const addLike = async (id, userID) => {
+  const docRef = doc(db, 'posts', id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const likes = docSnap.data().likes;
+    if (!likes.includes(userID)) {
+      // Agrega el UID del usuario al array utilizando arrayUnion
+      updateDoc(docRef, {
+        likes: arrayUnion(userID),
+      });
+    } else {
+      updateDoc(docRef, {
+        likes: arrayRemove(userID),
+      });
+    }
+  }
+};
+
+export const editPost = (id, message, postType) => {
+  const docRef = doc(db, 'posts', id);
+  updateDoc(docRef, {
+    message,
+    postType,
+  });
+};
+
+// Función que nos sugirió chat GPT
+
+/* export const addLike = (docRef) => {
   getDoc(docRef)
     .then(() => {
       if (doc.exists) {
@@ -71,16 +121,11 @@ export const addLike = (docRef, userID) => {
           console.log('El usuario ya ha dado click.');
         }
       } else {
-        console.log('El documento no existe.');
+        // console.log('El documento no existe.');
       }
     })
     .catch((error) => {
       console.error('Error al obtener el documento:', error);
     });
 };
-
-export const querySnapshot = getDocs(postCollection);
-
-const q = query(postCollection, orderBy('date', 'asc'));
-
-export const paintRealTime = (callback) => onSnapshot(q, callback);
+*/

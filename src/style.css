@@ -131,8 +131,13 @@ body {
     width: 40px;
     height: 40px;
 }
+.home-images {
+    width: 40px;
+    height: 40px;
+}
 
 .button-remedies {
+    padding: 20px 20px;
     padding: 20px 20px;
     border-radius: 10px;
     border: none;
@@ -146,6 +151,7 @@ body {
 }
 
 .button-habits {
+    padding: 20px 20px;
     padding: 20px 20px;
     border-radius: 10px;
     border: none;
@@ -161,6 +167,7 @@ body {
 
 .button-curiosities {
         padding: 20px 20px;
+        padding: 20px 20px;
         border-radius: 10px;
         border: none;
         background-color: #2f968f;
@@ -171,14 +178,12 @@ body {
         height: 100px;
         text-align: center;
 }
-
 .footer {
     position: fixed;
     padding: 10px;
     bottom: 0;
     width: 100%;
 }
-
 .image-home {
     height: 50px;
     width: 50px;
@@ -192,13 +197,17 @@ body {
     background-color: transparent;
     border: none;
 }
+/* Wall */ 
+
 .post-style {
     background-color: white;
     height:auto;
     width: 300px;
     border-radius: 10px;
     text-align: center;
-    align-items: center;
+    padding: 5px;
+    margin: 15px;
+    position: relative;
 }
 .img-like {
     height: 20px;
@@ -207,4 +216,11 @@ body {
 .button-like {
     background-color: transparent;
     border: none;
+    align-self: flex-end;
+}
+.post-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
 }

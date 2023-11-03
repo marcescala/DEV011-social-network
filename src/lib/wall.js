@@ -1,12 +1,11 @@
 import {
-  addPost, renderRealTime, auth, db, addLike, doc,
+  addPost, renderRealTime, auth, db, doc, deletePost, addLike, removeLike, obtenerUsuario,
 } from './index.js';
 
 export const renderWall = (navigateTo) => {
   const section = document.createElement('section');
   const template = `
           <img class="logo" src="Images/logo-habitate.png">
-          <h1 class="welcome"> Aquí van los post </h1>
           <section class="wallSection" >
           </section>
           <div class="footer">
@@ -58,39 +57,43 @@ export const renderWall = (navigateTo) => {
       // console.log('No hay usuario autenticado.');
     });
   });
-  let docID;
   renderRealTime((querySnapshot) => {
     postSection.textContent = '';
     querySnapshot.forEach((element) => {
-      docID = element.id;
+      const docID = element.id;
       /* console.log(doc.id);
       console.log(doc.data()); */
       const post = document.createElement('div');
       post.className = 'post-style';
       const postMessage = document.createElement('p');
       postMessage.innerHTML = element.data().message;
-      const like = document.createElement('button');
-      like.id = 'button-like';
-      like.className = 'button-like';
+      const btnEdit = document.createElement('button');
+      btnEdit.id = 'button-edit';
+      btnEdit.className = 'button-edit';
+      btnEdit.innerText = 'Editar';
+      const btnDelete = document.createElement('button');
+      btnDelete.id = 'button-delete';
+      btnDelete.className = 'button-delete';
+      btnDelete.innerText = 'Eliminar';
+      const btnLike = document.createElement('button');
+      btnLike.id = 'button-like';
+      btnLike.className = 'button-like';
       const apple = document.createElement('img');
       apple.src = 'Images/manzana_like.png';
       apple.className = 'img-like';
-      like.append(apple);
-      post.append(postMessage, like);
+      const counter = document.createElement('span');
+      counter.innerText = '1';
+      btnLike.append(apple);
+      post.append(postMessage, btnEdit, btnDelete, btnLike, counter);
       postSection.append(post);
-      return docID;
-    });
-    const buttonApple = wallSection.querySelector('#button-like');
-    buttonApple.addEventListener('click', () => {
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          // El usuario está autenticado, puedes acceder a sus datos
-          docID = 'LKqZUiEdh4pKFlaFMkmB';
-          const docRef = doc(db, 'posts', docID);
-          const userID = user.uid;
-          addLike(docRef, userID);
-        }
-        // console.log('No hay usuario autenticado.');
+      btnDelete.addEventListener('click', () => {
+        deletePost(docID);
+      });
+      btnLike.addEventListener('click', () => {
+        // const idPrueba = 'Kb7g8rbP5Lfr1yZLwrse0OMGQFq2';
+        const prueba = obtenerUsuario();
+        console.log(prueba.uid);
+        addLike(docID, prueba.uid);
       });
     });
   });
