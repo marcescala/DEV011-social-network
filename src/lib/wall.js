@@ -1,55 +1,99 @@
 import {
-  addPost, renderRealTime, auth, db, doc, deletePost, addLike, removeLike, authUser,
+  addPost, renderRealTime, deletePost, addLike, authUser, editPost, onAuthStateChanged, auth,
 } from './index.js';
 
 export const renderWall = (navigateTo) => {
   const section = document.createElement('section');
   const template = `
-          <img class="logo" src="Images/logo-habitate.png">
-          <section class="wallSection" >
-          </section>
-          <div class="footer">
+        <header class="wallbody">
+          <img class="logo-wall" src="Images/logo_habitate_largo.png">
+        </header>
+        <section class="log-display">
+          <body>
+            <div class="wallSectionInput" >
+            </div>
+            <div class="wallSection" >
+            </div>
+          </body>
+          <footer class="footer">
             <button id="go-home" class="button-home"  > 
-                <img src="Images/home_habitate.png" class="image-home">
+              <img src="Images/home_habitate.png" class="image-home">
             </button> 
             <button id="go-profile" class="button-home"  > 
-                <img src="Images/perfil_habitate.png" class="image-home">
+              <img src="Images/perfil_habitate.png" class="image-home">
             </button> 
-        </div>
+          </footer>
+        </section> 
       `;
 
   // Por ahora estoy creando aquí la sección de los post para poder empezar, posteriormente irá en una ventana pop up
   section.innerHTML = template;
+
+  auth.onAuthStateChanged((user) => {
+    console.log(user);
+    const displaySection = section.querySelector('.log-display');
+    if (user) {
+      displaySection.style.display = 'block';
+    } else {
+      displaySection.style.display = 'none';
+      const displayNoLog = document.createElement('div');
+      displayNoLog.className = 'log-out-display';
+      // displayNoLog.style.display = 'block';
+      const messageNoLog = document.createElement('p');
+      messageNoLog.innerText = 'Es necesario que inicies sesión para ver el contenido';
+      const buttonGoLogin = document.createElement('button');
+      buttonGoLogin.innerText = 'Inicia Sesión';
+      buttonGoLogin.id = 'go-login';
+      buttonGoLogin.className = 'button-second';
+      displayNoLog.append(messageNoLog, buttonGoLogin);
+      const header = section.querySelector('.wallbody');
+      header.append(displayNoLog);
+      buttonGoLogin.addEventListener('click', () => {
+        navigateTo('/login');
+      });
+    }
+  });
+
+  const wallSectionInput = section.querySelector('.wallSectionInput');
   const wallSection = section.querySelector('.wallSection');
   const inputPost = document.createElement('input');
   inputPost.id = 'inPost';
+  inputPost.className = 'inPost';
+  inputPost.placeholder = 'Déjanos tu recomendación';
   const postType = document.createElement('select');
   postType.id = 'select-type';
+  postType.className = 'select-type';
   const option1 = document.createElement('option');
   option1.value = 'receta';
-  option1.text = 'receta';
+  option1.text = 'Receta';
   const option2 = document.createElement('option');
   option2.value = 'remedio';
-  option2.text = 'remedio';
+  option2.text = 'Remedio';
   const option3 = document.createElement('option');
   option3.value = 'habito';
-  option3.text = 'hábito';
+  option3.text = 'Hábito';
   postType.append(option1, option2, option3);
   const buttonSendPost = document.createElement('button');
   buttonSendPost.id = 'button-sendPost';
+  buttonSendPost.className = 'button-sendPost';
   buttonSendPost.textContent = 'Publicar';
   const postSection = document.createElement('article');
   postSection.className = 'post-section';
-  wallSection.append(inputPost, postType, buttonSendPost, postSection);
+  wallSectionInput.append(inputPost);
+  wallSection.append(postType, buttonSendPost, postSection);
 
   buttonSendPost.addEventListener('click', () => {
-    const message = wallSection.querySelector('#inPost');
+    const message = wallSectionInput.querySelector('#inPost');
     const postTypeSel = wallSection.querySelector('#select-type');
-    console.log('funciona el boton', message, postTypeSel);
-    const user = authUser();
-    const userID = user.uid;
-    addPost(message.value, postTypeSel.value, userID);
-    message.value = '';
+    if (message.value !== '') {
+      const user = authUser();
+      const userID = user.uid;
+      const userEmail = user.email;
+      addPost(message.value, postTypeSel.value, userID, userEmail);
+      message.value = '';
+    } else {
+      alert('El mensaje no puede estar vacío');
+    }
   });
 
   renderRealTime((querySnapshot) => {
@@ -60,6 +104,12 @@ export const renderWall = (navigateTo) => {
       console.log(doc.data()); */
       const post = document.createElement('div');
       post.className = 'post-style';
+      post.id = 'post';
+      const userEmail = document.createElement('p');
+      userEmail.className = 'user-email';
+      userEmail.innerText = element.data().email;
+      const messageContainer = document.createElement('div');
+      messageContainer.className = 'messageContainer';
       const postMessage = document.createElement('p');
       postMessage.innerHTML = element.data().message;
       const btnEdit = document.createElement('button');
@@ -76,17 +126,63 @@ export const renderWall = (navigateTo) => {
       const apple = document.createElement('img');
       apple.src = 'Images/manzana_like.png';
       apple.className = 'img-like';
+      apple.style.opacity = 0.5;
       const counter = document.createElement('span');
       counter.innerText = element.data().likes.length;
       btnLike.append(apple);
-      post.append(postMessage, btnEdit, btnDelete, btnLike, counter);
+      messageContainer.append(postMessage);
+      post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
       postSection.append(post);
       btnDelete.addEventListener('click', () => {
-        deletePost(docID);
+        const userID = authUser().uid;
+        const postUser = element.data().user;
+        console.log(userID, postUser);
+        if (postUser === userID) {
+          const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
+          if (confirmDelete) {
+            deletePost(docID);
+          }
+        } else {
+          alert('Solo el autor original puede eliminar el post');
+        }
       });
       btnLike.addEventListener('click', () => {
         const user = authUser();
-        addLike(docID, user.uid);
+        addLike(docID, user.uid, apple);
+        apple.style.opacity = 1;
+      });
+      btnEdit.addEventListener('click', () => {
+        const userID = authUser().uid;
+        const postUser = element.data().user;
+        if (postUser === userID) {
+          const createInput = () => {
+            const inputEdit = document.createElement('input');
+            inputEdit.type = 'text';
+            inputEdit.className = 'input-edit';
+            inputEdit.id = 'input-edit';
+            inputEdit.value = element.data().message;
+            messageContainer.insertBefore(inputEdit, postMessage);
+            messageContainer.removeChild(postMessage);
+          };
+          const buttonEditPost = () => {
+            const inputEdit = wallSection.querySelector('#input-edit');
+            editPost(docID, inputEdit.value);
+            postMessage.innerHTML = element.data().message;
+            messageContainer.insertBefore(postMessage, inputEdit);
+            messageContainer.removeChild(inputEdit);
+            btnEdit.textContent = 'Editar';
+          };
+          if (btnEdit.textContent === 'Editar') {
+            createInput();
+            btnEdit.textContent = 'Guardar';
+            btnEdit.removeEventListener('click', buttonEditPost);
+            btnEdit.addEventListener('click', createInput);
+          } else {
+            buttonEditPost();
+          }
+        } else {
+          alert('Solo el autor original puede editar el post');
+        }
       });
     });
   });
