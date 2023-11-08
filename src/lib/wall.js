@@ -56,10 +56,17 @@ export const renderWall = (navigateTo) => {
 
   const wallSectionInput = section.querySelector('.wallSectionInput');
   const wallSection = section.querySelector('.wallSection');
+  const inputTitle = document.createElement('input');
+  inputTitle.id = 'input-title';
+  inputTitle.className = 'input-title';
+  inputTitle.placeholder = 'Título de tu recomendación';
   const inputPost = document.createElement('input');
   inputPost.id = 'inPost';
   inputPost.className = 'inPost';
   inputPost.placeholder = 'Déjanos tu recomendación';
+  const inputImage = document.createElement('label');
+  inputImage.textContent = 'Agrega una imagen';
+  inputImage.className = 'btn-img-post';
   const postType = document.createElement('select');
   postType.id = 'select-type';
   postType.className = 'select-type';
@@ -79,17 +86,19 @@ export const renderWall = (navigateTo) => {
   buttonSendPost.textContent = 'Publicar';
   const postSection = document.createElement('article');
   postSection.className = 'post-section';
-  wallSectionInput.append(inputPost);
-  wallSection.append(postType, buttonSendPost, postSection);
+  wallSectionInput.append(inputTitle, inputPost);
+  wallSection.append(inputImage, postType, buttonSendPost, postSection);
 
   buttonSendPost.addEventListener('click', () => {
+    const title = wallSectionInput.querySelector('#input-title');
     const message = wallSectionInput.querySelector('#inPost');
     const postTypeSel = wallSection.querySelector('#select-type');
+    const image = 'Images/pudin-de-chia-chia-pudding.jpeg';
     if (message.value !== '') {
       const user = authUser();
       const userID = user.uid;
       const userEmail = user.email;
-      addPost(message.value, postTypeSel.value, userID, userEmail);
+      addPost(title.value, message.value, postTypeSel.value, image, userID, userEmail);
       message.value = '';
     } else {
       alert('El mensaje no puede estar vacío');
@@ -110,8 +119,13 @@ export const renderWall = (navigateTo) => {
       userEmail.innerText = element.data().email;
       const messageContainer = document.createElement('div');
       messageContainer.className = 'messageContainer';
+      const postTitle = document.createElement('p');
+      postTitle.innerHTML = element.data().title;
       const postMessage = document.createElement('p');
       postMessage.innerHTML = element.data().message;
+      const imgPost = document.createElement('img');
+      imgPost.src = element.data().image;
+      imgPost.className = 'img-post';
       const btnEdit = document.createElement('button');
       btnEdit.id = 'button-edit';
       btnEdit.className = 'button-edit';
@@ -130,7 +144,7 @@ export const renderWall = (navigateTo) => {
       const counter = document.createElement('span');
       counter.innerText = element.data().likes.length;
       btnLike.append(apple);
-      messageContainer.append(postMessage);
+      messageContainer.append(postTitle, postMessage, imgPost);
       post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
       postSection.append(post);
       btnDelete.addEventListener('click', () => {
