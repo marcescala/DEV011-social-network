@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore, collection, addDoc, getDocs, onSnapshot, orderBy, query,
-  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc,
+  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc, where,
 } from 'firebase/firestore';
 import {
   getAuth,
@@ -20,7 +20,7 @@ export {
   signInWithPopup,
   collection,
   addDoc,
-  getDocs, onSnapshot, orderBy, query,
+  getDocs, onSnapshot, orderBy, query, where,
   updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc, signOut,
 };
 

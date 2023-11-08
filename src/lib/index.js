@@ -1,10 +1,13 @@
+import { onAuthStateChanged } from 'firebase/auth';
 import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
   auth, provider, db, addDoc, collection, getDocs, onSnapshot, orderBy, query,
-  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc,
+  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc, where,
 } from './firebase.js';
 
-export { auth, db, doc };
+export {
+  auth, db, doc, onAuthStateChanged,
+};
 
 const postCollection = collection(db, 'posts');
 
@@ -33,15 +36,25 @@ export function cerrarSesion() {
     });
 }
 
-export const addPost = (message, postType, userID) => {
+export const addPost = (title, message, postType, image, userID, userEmail) => {
   addDoc(postCollection, {
+    title,
     message,
     postType,
+    image,
     user: userID,
+    email: userEmail,
     likes: [],
     date: Date.now(),
   });
 };
+
+/* Función para verificar que exista un usuario en sesión
+export const stateLogin = auth.onAuthStateChanged(user) => {
+  if (user){
+
+  }
+} */
 
 export const authUser = () => {
   const user = auth.currentUser;
@@ -53,6 +66,8 @@ export const authUser = () => {
 export const querySnapshot = getDocs(postCollection);
 
 export const q = query(postCollection, orderBy('date', 'desc'));
+
+// export const q = query(postCollection, where("postType", "==", "habito"));
 
 // Función para poder ver la data en tiempo real
 export const renderRealTime = (callback) => onSnapshot(q, callback);
@@ -83,49 +98,11 @@ export const addLike = async (id, userID) => {
   }
 };
 
-export const editPost = (id, message, postType) => {
+export const editPost = (id, message) => {
   const docRef = doc(db, 'posts', id);
+  // cosnt likes = docRef;
+  console.log(docRef);
   updateDoc(docRef, {
     message,
-    postType,
   });
 };
-
-// Función que nos sugirió chat GPT
-
-/* export const addLike = (docRef) => {
-  getDoc(docRef)
-    .then(() => {
-      if (doc.exists) {
-      // Obtiene el array actual de UIDs (si existe)
-        const likes = docRef.data().likes || [];
-        console.log(likes);
-
-        // Verifica si el UID del usuario ya está en el array
-        if (!likes.includes(userID)) {
-        // Agrega el UID del usuario al array utilizando arrayUnion
-          updateDoc(docRef, {
-            likes: arrayUnion(userID),
-          })
-            .then(() => {
-              console.log('UID del usuario agregado al array con éxito.');
-
-              // Verifica el número de usuarios que han dado click
-              const numClicks = likes.length + 1;
-              console.log(`Número de usuarios que han dado click: ${numClicks}`);
-            })
-            .catch((error) => {
-              console.error('Error al agregar el UID al array:', error);
-            });
-        } else {
-          console.log('El usuario ya ha dado click.');
-        }
-      } else {
-        // console.log('El documento no existe.');
-      }
-    })
-    .catch((error) => {
-      console.error('Error al obtener el documento:', error);
-    });
-};
-*/

@@ -187,6 +187,7 @@ body {
     left: 0;
     right: 0;
     padding: 10px;
+    display: none;
 }
 
 .image-home {
@@ -213,8 +214,10 @@ body {
 .inPost {
     border-radius: 5px;
     border: none;
-    padding: 20px 73px;
+    padding: 20px 5px;
     color: rgb(48, 114, 114);
+    width: 60%;
+    height: 100px;
 }
 .select-type {
     background-color: #ecb0ad;
@@ -242,7 +245,7 @@ body {
 .post-style {
     background-color: white;
     height:auto;
-    width: 300px;
+    width: 60%;
     border-radius: 10px;
     text-align: center;
     padding: 5px;
@@ -263,9 +266,19 @@ body {
 .img-like {
     height: 20px;
     width:20px;
+    
 }
 .button-like {
     background-color: transparent;
     border: none;
     align-self: flex-end;
+}
+.user-email {
+    text-align: left;
+    color: #E7827C;
+    font-size: 80%;
+}
+.input-edit {
+    border-color: white;
+    height: 60px;
 }
