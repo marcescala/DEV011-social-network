@@ -36,10 +36,12 @@ export function cerrarSesion() {
     });
 }
 
-export const addPost = (message, postType, userID, userEmail) => {
+export const addPost = (title, message, postType, image, userID, userEmail) => {
   addDoc(postCollection, {
+    title,
     message,
     postType,
+    image,
     user: userID,
     email: userEmail,
     likes: [],
