@@ -67,6 +67,13 @@ export const renderWall = (navigateTo) => {
   const inputImage = document.createElement('label');
   inputImage.textContent = 'Agrega una imagen';
   inputImage.className = 'btn-img-post';
+  inputImage.setAttribute('for', 'input-file');
+  const inputFile = document.createElement('input');
+  inputFile.type = 'file';
+  inputFile.id = 'input-file';
+  inputFile.className = 'input-file';
+  inputFile.accept = 'image/.';
+  inputFile.style.display = 'none';
   const postType = document.createElement('select');
   postType.id = 'select-type';
   postType.className = 'select-type';
@@ -86,8 +93,15 @@ export const renderWall = (navigateTo) => {
   buttonSendPost.textContent = 'Publicar';
   const postSection = document.createElement('article');
   postSection.className = 'post-section';
-  wallSectionInput.append(inputTitle, inputPost);
+  wallSectionInput.append(inputTitle, inputPost, inputFile);
   wallSection.append(inputImage, postType, buttonSendPost, postSection);
+
+  /* función para obtener la información de la imagen
+  const getFile = (e) => {
+    fileItem = e.target.files[0];
+    fileName = fileItem.name;
+
+  };*/
 
   buttonSendPost.addEventListener('click', () => {
     const title = wallSectionInput.querySelector('#input-title');

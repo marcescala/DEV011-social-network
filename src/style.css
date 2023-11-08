@@ -215,6 +215,7 @@ body {
     border-radius: 5px;
     border: none;
     padding: 20px 5px;
+    margin-bottom: 10px;
     color: rgb(48, 114, 114);
     width: 60%;
     height: 100px;
@@ -281,4 +282,13 @@ body {
 .input-edit {
     border-color: white;
     height: 60px;
+}
+.wallSectionInput {
+    display:contents;
+    align-content: center;
+    background-color: #2f968f ;
+}
+.input-title{
+    width: 60%;
+    margin-bottom: 10px;
 }
