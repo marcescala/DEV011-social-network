@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
   auth, provider, db, addDoc, collection, getDocs, onSnapshot, orderBy, query,
   updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc, where,
+  ref, getDownloadURL, uploadBytes, storage,
 } from './firebase.js';
 
 export {
@@ -35,6 +36,23 @@ export function cerrarSesion() {
       console.log(error);
     });
 }
+
+// función para obtener la información de la imagen
+export const uploadFile = async (fileName) => {
+  // const imageName = `${Date.now()}_${fileName}`;
+  const storageRef = ref(storage, `images/${fileName}`);
+  const imageURL = await uploadBytes(storageRef, fileName.files[0])
+    .then(() => getDownloadURL(storageRef))
+    .then((url) => {
+      console.log(url);
+      return url;
+    })
+    .catch((error) => {
+      console.error('Error al cargar la imagen:', error);
+      return null;
+    });
+  return imageURL;
+};
 
 export const addPost = (title, message, postType, image, userID, userEmail) => {
   addDoc(postCollection, {

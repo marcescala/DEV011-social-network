@@ -1,5 +1,5 @@
 import {
-  addPost, renderRealTime, deletePost, addLike, authUser, editPost, onAuthStateChanged, auth,
+  addPost, renderRealTime, deletePost, addLike, authUser, editPost, onAuthStateChanged, auth, uploadFile,
 } from './index.js';
 
 export const renderWall = (navigateTo) => {
@@ -7,6 +7,7 @@ export const renderWall = (navigateTo) => {
   const template = `
         <header class="wallbody">
           <img class="logo-wall" src="Images/logo_habitate_largo.png">
+          <button id="prueba"> Prueba </button>
         </header>
         <section class="log-display">
           <body>
@@ -96,18 +97,17 @@ export const renderWall = (navigateTo) => {
   wallSectionInput.append(inputTitle, inputPost, inputFile);
   wallSection.append(inputImage, postType, buttonSendPost, postSection);
 
-  /* función para obtener la información de la imagen
-  const getFile = (e) => {
-    fileItem = e.target.files[0];
-    fileName = fileItem.name;
-
-  };*/
-
   buttonSendPost.addEventListener('click', () => {
     const title = wallSectionInput.querySelector('#input-title');
     const message = wallSectionInput.querySelector('#inPost');
     const postTypeSel = wallSection.querySelector('#select-type');
-    const image = 'Images/pudin-de-chia-chia-pudding.jpeg';
+    const imgInput = wallSectionInput.querySelector('#input-file');
+    console.log(imgInput);
+    const imageName = imgInput.files[0];
+    console.log(imageName);
+    // Hasta aquí todo bien, toca probar uploadFile
+    const image = uploadFile(imageName);
+    console.log(image);
     if (message.value !== '') {
       const user = authUser();
       const userID = user.uid;
