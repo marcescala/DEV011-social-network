@@ -220,5 +220,12 @@ export const renderWall = (navigateTo) => {
   buttonHome.addEventListener('click', () => {
     navigateTo('/home');
   });
+
+  // Prueba
+  const btnPrueba = section.querySelector('#prueba');
+  btnPrueba.addEventListener('click', () => {
+    const url = uploadFile();
+
+  });
   return section;
 };
