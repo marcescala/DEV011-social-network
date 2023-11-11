@@ -1,5 +1,5 @@
 import {
-  addPost, renderRealTime, deletePost, addLike, authUser, editPost, onAuthStateChanged, auth,
+  addPost, renderRealTime, /* deletePost, */ addLike, authUser, editPost, auth, uploadFile,
 } from './index.js';
 
 export const renderWall = (navigateTo) => {
@@ -7,6 +7,7 @@ export const renderWall = (navigateTo) => {
   const template = `
         <header class="wallbody">
           <img class="logo-wall" src="Images/logo_habitate_largo.png">
+          <button id="prueba"> Prueba </button>
         </header>
         <section class="log-display">
           <body>
@@ -67,6 +68,13 @@ export const renderWall = (navigateTo) => {
   const inputImage = document.createElement('label');
   inputImage.textContent = 'Agrega una imagen';
   inputImage.className = 'btn-img-post';
+  inputImage.setAttribute('for', 'input-file');
+  const inputFile = document.createElement('input');
+  inputFile.type = 'file';
+  inputFile.id = 'input-file';
+  inputFile.className = 'input-file';
+  inputFile.accept = 'image/.';
+  inputFile.style.display = 'none';
   const postType = document.createElement('select');
   postType.id = 'select-type';
   postType.className = 'select-type';
@@ -86,18 +94,25 @@ export const renderWall = (navigateTo) => {
   buttonSendPost.textContent = 'Publicar';
   const postSection = document.createElement('article');
   postSection.className = 'post-section';
-  wallSectionInput.append(inputTitle, inputPost);
+  wallSectionInput.append(inputTitle, inputPost, inputFile);
   wallSection.append(inputImage, postType, buttonSendPost, postSection);
 
-  buttonSendPost.addEventListener('click', () => {
+  buttonSendPost.addEventListener('click', async () => {
     const title = wallSectionInput.querySelector('#input-title');
     const message = wallSectionInput.querySelector('#inPost');
     const postTypeSel = wallSection.querySelector('#select-type');
-    const image = 'Images/pudin-de-chia-chia-pudding.jpeg';
-    if (message.value !== '') {
+    const imgInput = wallSectionInput.querySelector('#input-file');
+    console.log(imgInput);
+
+    if (message.value !== '' && title.value !== '') {
       const user = authUser();
       const userID = user.uid;
       const userEmail = user.email;
+      const imagePost = imgInput.files[0];
+      const imageName = imagePost.name;
+      console.log(imagePost, imageName);
+      const image = await uploadFile(imageName, imagePost);
+      console.log(image);
       addPost(title.value, message.value, postTypeSel.value, image, userID, userEmail);
       message.value = '';
     } else {
@@ -147,7 +162,7 @@ export const renderWall = (navigateTo) => {
       messageContainer.append(postTitle, postMessage, imgPost);
       post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
       postSection.append(post);
-      btnDelete.addEventListener('click', () => {
+      /* btnDelete.addEventListener('click', () => {
         const userID = authUser().uid;
         const postUser = element.data().user;
         console.log(userID, postUser);
@@ -159,7 +174,7 @@ export const renderWall = (navigateTo) => {
         } else {
           alert('Solo el autor original puede eliminar el post');
         }
-      });
+      }); */
       btnLike.addEventListener('click', () => {
         const user = authUser();
         addLike(docID, user.uid, apple);
@@ -206,5 +221,6 @@ export const renderWall = (navigateTo) => {
   buttonHome.addEventListener('click', () => {
     navigateTo('/home');
   });
+
   return section;
 };

@@ -3,6 +3,7 @@
  */
 import { renderSignup } from '../src/lib/signup.js';
 import * as index from '../src/lib/index.js';
+import { renderWall } from '../src/lib/wall.js';
 
 // jest.mock('../src/lib/index.js', () => (
 //   {
@@ -57,3 +58,32 @@ describe('button Go', (done) => {
     });
   });
 });
+
+/* describe('renderWall', () => {
+  test('verifica que se agregue un post', async () => {
+    const mock = jest.fn();
+    const DOM = document.createElement('section');
+    DOM.append(renderWall(mock));
+
+    //tenemos que simular un archivo
+
+    // toca traer todos los elementos del post: title, message, postType, image, userID, userEmail
+    const title = DOM.querySelector('#input-title');
+    const message = DOM.querySelector('#inPost');
+    const postType = DOM.querySelector('#select-type');
+    const image = DOM.querySelector('#input-file');
+
+    title.value = 'Titulo';
+    message.value = 'Este es el mensaje';
+    postType.value = 'receta';
+    // se pretende que se elige el archivo
+    const userID = 'iMoLjxbUuKWTnvhHjBN2aKLOnUG3';
+    const userEmail = 'les@ejemplo.com';
+
+    const btnSendPost = DOM.querySelector('#button-sendPost');
+    btnSendPost.click();
+    const post = await index.addPost(title.value, message.value, postType.value, image.files[0], userID, userEmail);
+    expect(post).toBe(true);
+  });
+}); */
+

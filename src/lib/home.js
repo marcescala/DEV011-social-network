@@ -1,4 +1,4 @@
-import { cerrarSesion, auth, onAuthStateChanged } from './index.js';
+import { cerrarSesion, auth } from './index.js';
 
 export const renderHome = (navigateTo) => {
   const section = document.createElement('section');
@@ -35,7 +35,6 @@ export const renderHome = (navigateTo) => {
         </section>
     `;
 
-  // window.onload = () => {
   auth.onAuthStateChanged((user) => {
     console.log(user);
     const displaySection = section.querySelector('.log-display');
