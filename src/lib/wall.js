@@ -1,5 +1,5 @@
 import {
-  addPost, renderRealTime, deletePost, addLike, authUser, editPost, onAuthStateChanged, auth, uploadFile,
+  addPost, renderRealTime, /* deletePost, */ addLike, authUser, editPost, auth, uploadFile,
 } from './index.js';
 
 export const renderWall = (navigateTo) => {
@@ -97,21 +97,22 @@ export const renderWall = (navigateTo) => {
   wallSectionInput.append(inputTitle, inputPost, inputFile);
   wallSection.append(inputImage, postType, buttonSendPost, postSection);
 
-  buttonSendPost.addEventListener('click', () => {
+  buttonSendPost.addEventListener('click', async () => {
     const title = wallSectionInput.querySelector('#input-title');
     const message = wallSectionInput.querySelector('#inPost');
     const postTypeSel = wallSection.querySelector('#select-type');
     const imgInput = wallSectionInput.querySelector('#input-file');
     console.log(imgInput);
-    const imageName = imgInput.files[0];
-    console.log(imageName);
-    // Hasta aquí todo bien, toca probar uploadFile
-    const image = uploadFile(imageName);
-    console.log(image);
-    if (message.value !== '') {
+
+    if (message.value !== '' && title.value !== '') {
       const user = authUser();
       const userID = user.uid;
       const userEmail = user.email;
+      const imagePost = imgInput.files[0];
+      const imageName = imagePost.name;
+      console.log(imagePost, imageName);
+      const image = await uploadFile(imageName, imagePost);
+      console.log(image);
       addPost(title.value, message.value, postTypeSel.value, image, userID, userEmail);
       message.value = '';
     } else {
@@ -161,7 +162,7 @@ export const renderWall = (navigateTo) => {
       messageContainer.append(postTitle, postMessage, imgPost);
       post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
       postSection.append(post);
-      btnDelete.addEventListener('click', () => {
+      /* btnDelete.addEventListener('click', () => {
         const userID = authUser().uid;
         const postUser = element.data().user;
         console.log(userID, postUser);
@@ -173,7 +174,7 @@ export const renderWall = (navigateTo) => {
         } else {
           alert('Solo el autor original puede eliminar el post');
         }
-      });
+      }); */
       btnLike.addEventListener('click', () => {
         const user = authUser();
         addLike(docID, user.uid, apple);
@@ -221,11 +222,5 @@ export const renderWall = (navigateTo) => {
     navigateTo('/home');
   });
 
-  // Prueba
-  const btnPrueba = section.querySelector('#prueba');
-  btnPrueba.addEventListener('click', () => {
-    const url = uploadFile();
-
-  });
   return section;
 };

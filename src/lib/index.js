@@ -2,7 +2,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
   auth, provider, db, addDoc, collection, getDocs, onSnapshot, orderBy, query,
-  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc, where,
+  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc,
   ref, getDownloadURL, uploadBytes, storage,
 } from './firebase.js';
 
@@ -38,20 +38,17 @@ export function cerrarSesion() {
 }
 
 // función para obtener la información de la imagen
-export const uploadFile = async (fileName) => {
-  // const imageName = `${Date.now()}_${fileName}`;
+export const uploadFile = async (fileName, file) => {
   const storageRef = ref(storage, `images/${fileName}`);
-  const imageURL = await uploadBytes(storageRef, fileName.files[0])
-    .then(() => getDownloadURL(storageRef))
-    .then((url) => {
-      console.log(url);
-      return url;
-    })
-    .catch((error) => {
-      console.error('Error al cargar la imagen:', error);
-      return null;
-    });
-  return imageURL;
+  try {
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+    console.log('Se subio el archivo', url);
+    return url;
+  } catch (error) {
+    console.error('Error al cargar la imagen:', error);
+    return null;
+  }
 };
 
 export const addPost = (title, message, postType, image, userID, userEmail) => {
@@ -66,13 +63,6 @@ export const addPost = (title, message, postType, image, userID, userEmail) => {
     date: Date.now(),
   });
 };
-
-/* Función para verificar que exista un usuario en sesión
-export const stateLogin = auth.onAuthStateChanged(user) => {
-  if (user){
-
-  }
-} */
 
 export const authUser = () => {
   const user = auth.currentUser;

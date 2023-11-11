@@ -286,9 +286,12 @@ body {
 .wallSectionInput {
     display:contents;
     align-content: center;
-    background-color: #2f968f ;
 }
 .input-title{
     width: 60%;
     margin-bottom: 10px;
+}
+.img-post {
+    width: 150px;
+    height: 150px;
 }
