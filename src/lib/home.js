@@ -1,4 +1,4 @@
-import { cerrarSesion, auth, onAuthStateChanged } from './index.js';
+import { cerrarSesion, auth } from './index.js';
 
 export const renderHome = (navigateTo) => {
   const section = document.createElement('section');
@@ -6,9 +6,9 @@ export const renderHome = (navigateTo) => {
   const template = `
     <img class="logo-home" src="Images/logo_habitate_largo.png">
     <section class="log-display">
-    <div class="container-buttonout"> 
-        <button id="log-out" class="log-out"> Cerrar Sesión </button>
-    </div>    
+       <button id="log-out" class="log-out" name="logout">
+            <img src="Images/logout_habitate.png" class="logout-images">
+        </button>
         <h2 class="title-home"> ¿Qué quieres ver?</h2>
         <div class="buttons">
            <div class="up">
@@ -27,10 +27,6 @@ export const renderHome = (navigateTo) => {
                 <span> Hábitos Saludables </span>
             </button>
            </div>
-        </div>
-        <div class="footer">
-            <img class="image-home" src="Images/home_habitate.png">
-            <img class="image-perfil" src="Images/perfil_habitate.png">
         </div>
         </section>
     `;

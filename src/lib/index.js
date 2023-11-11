@@ -2,7 +2,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
   auth, provider, db, addDoc, collection, getDocs, onSnapshot, orderBy, query,
-  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc, where,
+  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc,
 } from './firebase.js';
 
 export {
@@ -34,10 +34,12 @@ export function cerrarSesion() {
     });
 }
 
-export const addPost = (message, postType, userID, userEmail) => {
+export const addPost = (title, message, postType, image, userID, userEmail) => {
   addDoc(postCollection, {
+    title,
     message,
     postType,
+    image,
     user: userID,
     email: userEmail,
     likes: [],
@@ -48,6 +50,13 @@ export const addPost = (message, postType, userID, userEmail) => {
 /* Función para verificar que exista un usuario en sesión
 export const stateLogin = auth.onAuthStateChanged(user) => {
   if (user){
+  }
+} */
+
+/* Función para verificar que exista un usuario en sesión
+export const stateLogin = auth.onAuthStateChanged(user) => {
+  if (user){
+
   }
 } */
 

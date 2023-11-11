@@ -1,5 +1,5 @@
 import {
-  addPost, renderRealTime, deletePost, addLike, authUser, editPost, onAuthStateChanged, auth,
+  addPost, renderRealTime, deletePost, addLike, authUser, editPost, auth, cerrarSesion,
 } from './index.js';
 
 export const renderWall = (navigateTo) => {
@@ -8,20 +8,19 @@ export const renderWall = (navigateTo) => {
         <header class="wallbody">
           <img class="logo-wall" src="Images/logo_habitate_largo.png">
         </header>
-        <div id="buttons-home-logout"
-          <button id="go-home" class="button-home"> 
-          <img src="Images/home_habitate.png" class="image-home">
-          </button> 
-       </div>
         <section class="log-display">
           <body>
+            <button id="go-home" class="button-home"  > 
+              <img src="Images/home_habitate.png" class="image-home">
+            </button> 
+            <button id="log-outWall" class="log-outWall" name="logoutWall">
+              <img src="Images/logout_habitate.png" class="logout-imagesWall">
+            </button>
             <div class="wallSectionInput" >
             </div>
             <div class="wallSection" >
             </div>
           </body>
-          <footer class="footer">
-          </footer>
         </section> 
       `;
 
@@ -55,10 +54,23 @@ export const renderWall = (navigateTo) => {
 
   const wallSectionInput = section.querySelector('.wallSectionInput');
   const wallSection = section.querySelector('.wallSection');
-  const inputPost = document.createElement('input');
+  const inputTitle = document.createElement('input');
+  inputTitle.id = 'input-title';
+  inputTitle.className = 'input-title';
+  inputTitle.placeholder = 'Título de tu recomendación';
+  const inputPost = document.createElement('textArea');
   inputPost.id = 'inPost';
   inputPost.className = 'inPost';
   inputPost.placeholder = 'Déjanos tu recomendación';
+  const inputImage = document.createElement('label');
+  const inputFile = document.createElement('input');
+  inputFile.type = 'file';
+  inputFile.id = 'input-file';
+  inputFile.className = 'input-file';
+  inputFile.accept = 'image/.';
+  inputFile.style.display = 'none';
+  inputImage.textContent = 'Agrega una imagen';
+  inputImage.className = 'btn-img-post';
   const postType = document.createElement('select');
   postType.id = 'select-type';
   postType.className = 'select-type';
@@ -78,17 +90,19 @@ export const renderWall = (navigateTo) => {
   buttonSendPost.textContent = 'Publicar';
   const postSection = document.createElement('article');
   postSection.className = 'post-section';
-  wallSectionInput.append(inputPost);
-  wallSection.append(postType, buttonSendPost, postSection);
+  wallSectionInput.append(inputTitle, inputPost, inputFile);
+  wallSection.append(inputImage, postType, buttonSendPost, postSection);
 
   buttonSendPost.addEventListener('click', () => {
+    const title = wallSectionInput.querySelector('#input-title');
     const message = wallSectionInput.querySelector('#inPost');
     const postTypeSel = wallSection.querySelector('#select-type');
+    const image = 'Images/pudin-de-chia-chia-pudding.jpeg';
     if (message.value !== '') {
       const user = authUser();
       const userID = user.uid;
       const userEmail = user.email;
-      addPost(message.value, postTypeSel.value, userID, userEmail);
+      addPost(title.value, message.value, postTypeSel.value, image, userID, userEmail);
       message.value = '';
     } else {
       alert('El mensaje no puede estar vacío');
@@ -99,6 +113,7 @@ export const renderWall = (navigateTo) => {
     postSection.textContent = '';
     querySnapshot.forEach((element) => {
       const docID = element.id;
+      const userID = authUser().uid;
       /* console.log(doc.id);
       console.log(doc.data()); */
       const post = document.createElement('div');
@@ -108,10 +123,15 @@ export const renderWall = (navigateTo) => {
       userEmail.className = 'user-email';
       userEmail.innerText = element.data().email;
       const messageContainer = document.createElement('div');
-      messageContainer.className = 'messageContainer';
+      messageContainer.className = 'message-container';
+      const postTitle = document.createElement('p');
+      postTitle.innerHTML = element.data().title;
       const postMessage = document.createElement('p');
       postMessage.innerHTML = element.data().message;
       postMessage.className = 'post-message-style';
+      const imgPost = document.createElement('img');
+      imgPost.src = element.data().image;
+      imgPost.className = 'img-post';
       const btnEdit = document.createElement('button');
       btnEdit.id = 'button-edit';
       btnEdit.className = 'button-edit';
@@ -126,33 +146,36 @@ export const renderWall = (navigateTo) => {
       const apple = document.createElement('img');
       apple.src = 'Images/manzana_like.png';
       apple.className = 'img-like';
-      apple.style.opacity = 0.5;
+      if (element.data().likes.includes(userID)) {
+        apple.style.opacity = 1;
+      } else {
+        apple.style.opacity = 0.5;
+      }
       const counter = document.createElement('span');
       counter.innerText = element.data().likes.length;
       btnLike.append(apple);
-      messageContainer.append(postMessage);
+      messageContainer.append(postTitle, postMessage, imgPost);
       post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
       postSection.append(post);
       btnDelete.addEventListener('click', () => {
-        const userID = authUser().uid;
-        const postUser = element.data().user;
-        console.log(userID, postUser);
-        if (postUser === userID) {
-          const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
-          if (confirmDelete) {
-            deletePost(docID);
-          }
-        } else {
-          alert('Solo el autor original puede eliminar el post');
-        }
+        // const userID = authUser().uid;
+        // const postUser = element.data().user;
+        // console.log(userID, postUser);
+        // if (postUser === userID) {
+        // const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
+        // if (confirmDelete) {
+        deletePost(docID);
+        // }
+        // } else {
+        // alert('Solo el autor original puede eliminar el post');
+        // }
       });
       btnLike.addEventListener('click', () => {
         const user = authUser();
         addLike(docID, user.uid, apple);
-        apple.style.opacity = 1;
       });
       btnEdit.addEventListener('click', () => {
-        const userID = authUser().uid;
+        // const userID = authUser().uid;
         const postUser = element.data().user;
         if (postUser === userID) {
           const createInput = () => {
@@ -166,7 +189,6 @@ export const renderWall = (navigateTo) => {
           };
           const buttonEditPost = () => {
             const inputEdit = wallSection.querySelector('#input-edit');
-            inputEdit.className = 'input-edit';
             editPost(docID, inputEdit.value);
             postMessage.innerHTML = element.data().message;
             messageContainer.insertBefore(postMessage, inputEdit);
@@ -186,10 +208,17 @@ export const renderWall = (navigateTo) => {
         }
       });
     });
-    const buttonHome = section.querySelector('#go-home');
-    buttonHome.addEventListener('click', () => {
-      navigateTo('/home');
-    });
+  });
+  const buttonLogOut = section.querySelector('#log-outWall');
+  buttonLogOut.addEventListener('click', () => {
+    cerrarSesion();
+    navigateTo('/');
+  });
+
+  // Agrega el evento para direccionar al home de nuevo
+  const buttonHome = section.querySelector('#go-home');
+  buttonHome.addEventListener('click', () => {
+    navigateTo('/home');
   });
   return section;
 };
