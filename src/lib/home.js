@@ -31,7 +31,6 @@ export const renderHome = (navigateTo) => {
         </section>
     `;
 
-  // window.onload = () => {
   auth.onAuthStateChanged((user) => {
     console.log(user);
     const displaySection = section.querySelector('.log-display');

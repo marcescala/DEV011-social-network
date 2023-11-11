@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
   auth, provider, db, addDoc, collection, getDocs, onSnapshot, orderBy, query,
   updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc,
+  ref, getDownloadURL, uploadBytes, storage,
 } from './firebase.js';
 
 export {
@@ -15,10 +16,12 @@ const postCollection = collection(db, 'posts');
 export function callLoginGoogle() {
   return signInWithPopup(auth, provider);
 }
+
 // Función que crea un nuevo usuario con firebase y utiliza email y password
 export function submitNewUserInfo(email, password) {
   return createUserWithEmailAndPassword(auth, email, password);
 }
+
 // Función que hace log in con email y password con firebase
 export function submitUserInfo(email, password) {
   return signInWithEmailAndPassword(auth, email, password);
@@ -34,6 +37,20 @@ export function cerrarSesion() {
     });
 }
 
+// función para obtener la información de la imagen
+export const uploadFile = async (fileName, file) => {
+  const storageRef = ref(storage, `images/${fileName}`);
+  try {
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+    console.log('Se subio el archivo', url);
+    return url;
+  } catch (error) {
+    console.error('Error al cargar la imagen:', error);
+    return null;
+  }
+};
+
 export const addPost = (title, message, postType, image, userID, userEmail) => {
   addDoc(postCollection, {
     title,
@@ -46,19 +63,6 @@ export const addPost = (title, message, postType, image, userID, userEmail) => {
     date: Date.now(),
   });
 };
-
-/* Función para verificar que exista un usuario en sesión
-export const stateLogin = auth.onAuthStateChanged(user) => {
-  if (user){
-  }
-} */
-
-/* Función para verificar que exista un usuario en sesión
-export const stateLogin = auth.onAuthStateChanged(user) => {
-  if (user){
-
-  }
-} */
 
 export const authUser = () => {
   const user = auth.currentUser;
@@ -80,7 +84,9 @@ export const renderRealTime = (callback) => onSnapshot(q, callback);
 export const deletePost = (id) => {
   deleteDoc(doc(db, 'posts', id));
 };
+
 // Pruebas para la función del like
+
 export const addLike = async (id, userID) => {
   const docRef = doc(db, 'posts', id);
   const docSnap = await getDoc(docRef);

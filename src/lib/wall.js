@@ -1,5 +1,5 @@
 import {
-  addPost, renderRealTime, deletePost, addLike, authUser, editPost, auth, cerrarSesion,
+  addPost, renderRealTime, deletePost, addLike, authUser, editPost, auth, cerrarSesion, uploadFile,
 } from './index.js';
 
 export const renderWall = (navigateTo) => {
@@ -63,14 +63,15 @@ export const renderWall = (navigateTo) => {
   inputPost.className = 'inPost';
   inputPost.placeholder = 'Déjanos tu recomendación';
   const inputImage = document.createElement('label');
+  inputImage.textContent = 'Agrega una imagen';
+  inputImage.className = 'btn-img-post';
+  inputImage.setAttribute('for', 'input-file');
   const inputFile = document.createElement('input');
   inputFile.type = 'file';
   inputFile.id = 'input-file';
   inputFile.className = 'input-file';
   inputFile.accept = 'image/.';
   inputFile.style.display = 'none';
-  inputImage.textContent = 'Agrega una imagen';
-  inputImage.className = 'btn-img-post';
   const postType = document.createElement('select');
   postType.id = 'select-type';
   postType.className = 'select-type';
@@ -93,15 +94,22 @@ export const renderWall = (navigateTo) => {
   wallSectionInput.append(inputTitle, inputPost, inputFile);
   wallSection.append(inputImage, postType, buttonSendPost, postSection);
 
-  buttonSendPost.addEventListener('click', () => {
+  buttonSendPost.addEventListener('click', async () => {
     const title = wallSectionInput.querySelector('#input-title');
     const message = wallSectionInput.querySelector('#inPost');
     const postTypeSel = wallSection.querySelector('#select-type');
-    const image = 'Images/pudin-de-chia-chia-pudding.jpeg';
-    if (message.value !== '') {
+    const imgInput = wallSectionInput.querySelector('#input-file');
+    console.log(imgInput);
+
+    if (message.value !== '' && title.value !== '') {
       const user = authUser();
       const userID = user.uid;
       const userEmail = user.email;
+      const imagePost = imgInput.files[0];
+      const imageName = imagePost.name;
+      console.log(imagePost, imageName);
+      const image = await uploadFile(imageName, imagePost);
+      console.log(image);
       addPost(title.value, message.value, postTypeSel.value, image, userID, userEmail);
       message.value = '';
     } else {
