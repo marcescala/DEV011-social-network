@@ -2,7 +2,8 @@ import { onAuthStateChanged } from 'firebase/auth';
 import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,
   auth, provider, db, addDoc, collection, getDocs, onSnapshot, orderBy, query,
-  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc, where,
+  updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc,
+  ref, getDownloadURL, uploadBytes, storage,
 } from './firebase.js';
 
 export {
@@ -36,6 +37,20 @@ export function cerrarSesion() {
     });
 }
 
+// función para obtener la información de la imagen
+export const uploadFile = async (fileName, file) => {
+  const storageRef = ref(storage, `images/${fileName}`);
+  try {
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+    console.log('Se subio el archivo', url);
+    return url;
+  } catch (error) {
+    console.error('Error al cargar la imagen:', error);
+    return null;
+  }
+};
+
 export const addPost = (title, message, postType, image, userID, userEmail) => {
   addDoc(postCollection, {
     title,
@@ -48,13 +63,6 @@ export const addPost = (title, message, postType, image, userID, userEmail) => {
     date: Date.now(),
   });
 };
-
-/* Función para verificar que exista un usuario en sesión
-export const stateLogin = auth.onAuthStateChanged(user) => {
-  if (user){
-
-  }
-} */
 
 export const authUser = () => {
   const user = auth.currentUser;
@@ -82,7 +90,6 @@ export const deletePost = (id) => {
 export const addLike = async (id, userID) => {
   const docRef = doc(db, 'posts', id);
   const docSnap = await getDoc(docRef);
-
   if (docSnap.exists()) {
     const likes = docSnap.data().likes;
     if (!likes.includes(userID)) {

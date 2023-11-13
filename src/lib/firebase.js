@@ -4,6 +4,10 @@ import {
   updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc, where,
 } from 'firebase/firestore';
 import {
+  getStorage, ref, getDownloadURL, uploadBytes,
+} from 'firebase/storage';
+
+import {
   getAuth,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -22,6 +26,7 @@ export {
   addDoc,
   getDocs, onSnapshot, orderBy, query, where,
   updateDoc, arrayUnion, arrayRemove, doc, getDoc, deleteDoc, signOut,
+  getStorage, ref, getDownloadURL, uploadBytes,
 };
 
 const firebaseConfig = {
@@ -40,3 +45,4 @@ export const provider = new GoogleAuthProvider();
 export const auth = getAuth();
 
 export const db = getFirestore(app);
+export const storage = getStorage(app);

@@ -1,5 +1,5 @@
 import {
-  addPost, renderRealTime, deletePost, addLike, authUser, editPost, onAuthStateChanged, auth,
+  addPost, renderRealTime, deletePost, addLike, authUser, editPost, auth, cerrarSesion, uploadFile,
 } from './index.js';
 
 export const renderWall = (navigateTo) => {
@@ -10,19 +10,17 @@ export const renderWall = (navigateTo) => {
         </header>
         <section class="log-display">
           <body>
+            <button id="go-home" class="button-home"  > 
+              <img src="Images/home_habitate.png" class="image-home">
+            </button> 
+            <button id="log-outWall" class="log-outWall" name="logoutWall">
+              <img src="Images/logout_habitate.png" class="logout-imagesWall">
+            </button>
             <div class="wallSectionInput" >
             </div>
             <div class="wallSection" >
             </div>
           </body>
-          <footer class="footer">
-            <button id="go-home" class="button-home"  > 
-              <img src="Images/home_habitate.png" class="image-home">
-            </button> 
-            <button id="go-profile" class="button-home"  > 
-              <img src="Images/perfil_habitate.png" class="image-home">
-            </button> 
-          </footer>
         </section> 
       `;
 
@@ -60,13 +58,20 @@ export const renderWall = (navigateTo) => {
   inputTitle.id = 'input-title';
   inputTitle.className = 'input-title';
   inputTitle.placeholder = 'Título de tu recomendación';
-  const inputPost = document.createElement('input');
+  const inputPost = document.createElement('textArea');
   inputPost.id = 'inPost';
   inputPost.className = 'inPost';
   inputPost.placeholder = 'Déjanos tu recomendación';
   const inputImage = document.createElement('label');
   inputImage.textContent = 'Agrega una imagen';
   inputImage.className = 'btn-img-post';
+  inputImage.setAttribute('for', 'input-file');
+  const inputFile = document.createElement('input');
+  inputFile.type = 'file';
+  inputFile.id = 'input-file';
+  inputFile.className = 'input-file';
+  inputFile.accept = 'image/.';
+  inputFile.style.display = 'none';
   const postType = document.createElement('select');
   postType.id = 'select-type';
   postType.className = 'select-type';
@@ -86,18 +91,25 @@ export const renderWall = (navigateTo) => {
   buttonSendPost.textContent = 'Publicar';
   const postSection = document.createElement('article');
   postSection.className = 'post-section';
-  wallSectionInput.append(inputTitle, inputPost);
+  wallSectionInput.append(inputTitle, inputPost, inputFile);
   wallSection.append(inputImage, postType, buttonSendPost, postSection);
 
-  buttonSendPost.addEventListener('click', () => {
+  buttonSendPost.addEventListener('click', async () => {
     const title = wallSectionInput.querySelector('#input-title');
     const message = wallSectionInput.querySelector('#inPost');
     const postTypeSel = wallSection.querySelector('#select-type');
-    const image = 'Images/pudin-de-chia-chia-pudding.jpeg';
-    if (message.value !== '') {
+    const imgInput = wallSectionInput.querySelector('#input-file');
+    console.log(imgInput);
+
+    if (message.value !== '' && title.value !== '') {
       const user = authUser();
       const userID = user.uid;
       const userEmail = user.email;
+      const imagePost = imgInput.files[0];
+      const imageName = imagePost.name;
+      console.log(imagePost, imageName);
+      const image = await uploadFile(imageName, imagePost);
+      console.log(image);
       addPost(title.value, message.value, postTypeSel.value, image, userID, userEmail);
       message.value = '';
     } else {
@@ -109,6 +121,7 @@ export const renderWall = (navigateTo) => {
     postSection.textContent = '';
     querySnapshot.forEach((element) => {
       const docID = element.id;
+      const userID = authUser().uid;
       /* console.log(doc.id);
       console.log(doc.data()); */
       const post = document.createElement('div');
@@ -118,11 +131,12 @@ export const renderWall = (navigateTo) => {
       userEmail.className = 'user-email';
       userEmail.innerText = element.data().email;
       const messageContainer = document.createElement('div');
-      messageContainer.className = 'messageContainer';
+      messageContainer.className = 'message-container';
       const postTitle = document.createElement('p');
       postTitle.innerHTML = element.data().title;
       const postMessage = document.createElement('p');
       postMessage.innerHTML = element.data().message;
+      postMessage.className = 'post-message-style';
       const imgPost = document.createElement('img');
       imgPost.src = element.data().image;
       imgPost.className = 'img-post';
@@ -140,7 +154,11 @@ export const renderWall = (navigateTo) => {
       const apple = document.createElement('img');
       apple.src = 'Images/manzana_like.png';
       apple.className = 'img-like';
-      apple.style.opacity = 0.5;
+      if (element.data().likes.includes(userID)) {
+        apple.style.opacity = 1;
+      } else {
+        apple.style.opacity = 0.5;
+      }
       const counter = document.createElement('span');
       counter.innerText = element.data().likes.length;
       btnLike.append(apple);
@@ -148,25 +166,24 @@ export const renderWall = (navigateTo) => {
       post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
       postSection.append(post);
       btnDelete.addEventListener('click', () => {
-        const userID = authUser().uid;
-        const postUser = element.data().user;
-        console.log(userID, postUser);
-        if (postUser === userID) {
-          const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
-          if (confirmDelete) {
-            deletePost(docID);
-          }
-        } else {
-          alert('Solo el autor original puede eliminar el post');
-        }
+        // const userID = authUser().uid;
+        // const postUser = element.data().user;
+        // console.log(userID, postUser);
+        // if (postUser === userID) {
+        // const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
+        // if (confirmDelete) {
+        deletePost(docID);
+        // }
+        // } else {
+        // alert('Solo el autor original puede eliminar el post');
+        // }
       });
       btnLike.addEventListener('click', () => {
         const user = authUser();
         addLike(docID, user.uid, apple);
-        apple.style.opacity = 1;
       });
       btnEdit.addEventListener('click', () => {
-        const userID = authUser().uid;
+        // const userID = authUser().uid;
         const postUser = element.data().user;
         if (postUser === userID) {
           const createInput = () => {
@@ -199,6 +216,11 @@ export const renderWall = (navigateTo) => {
         }
       });
     });
+  });
+  const buttonLogOut = section.querySelector('#log-outWall');
+  buttonLogOut.addEventListener('click', () => {
+    cerrarSesion();
+    navigateTo('/');
   });
 
   // Agrega el evento para direccionar al home de nuevo

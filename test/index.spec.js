@@ -1,11 +1,13 @@
 /**
  * @jest-environment jsdom
  */
+
 // import { signOut } from 'firebase/auth';
 import { renderSignup } from '../src/lib/signup.js';
 import { renderWall } from '../src/lib/wall.js';
 // import { addLike } from '../src/lib/index.js';
 import * as index from '../src/lib/index.js';
+import { renderWall } from '../src/lib/wall.js';
 
 // jest.mock('../src/lib/index.js', () => (
 //   {
@@ -104,60 +106,3 @@ describe('button-sendPost', () => {
     expect(haveAButton).not.toBe(undefined);
   });
 });
-
-// // describe('cerrarSesion', () => {
-// //   test('es una fucion', () => {
-// //     expect(typeof index.cerrarSesion).toBe('function');
-// //   });
-// //   test('llama la funcion signOut', () => {
-// //     index.cerrarSesion();
-// //     console.log(index.cerrarSesion());
-// //     expect(signOut).toHaveBeenCalled();
-// //   });
-// // });
-
-// describe('addPost', () => {
-//   test('agrega un documento a la coleccion', (done) => {
-//     jest.spyOn(index, 'addPost').mockImplementation(() => Promise.resolve());
-//     const DOM = document.createElement('section');
-//     const buttonSendPost = DOM.querySelector('#button-sendPost');
-//     const navigateTo = jest.fn();
-
-//     DOM.append(renderWall(navigateTo));
-//     const title = DOM.querySelector('#input-title');
-//     const message = DOM.querySelector('#inPost');
-//     const postType = DOM.querySelector('#select-type');
-//     // const image = 'habito.jpg';
-//     title.value = 'Post';
-//     message.value = 'este es el post';
-//     postType.value = 'habito';
-//     const userID = 'iMoLjxbUuKWTnvhHjBN2aKLOnUG3';
-//     const email = 'les@ejemplo.com';
-
-//     buttonSendPost.click();
-//     index.addPost(title.value, message.value, postType.value, userID, email);
-
-//     setTimeout(() => {
-//       expect(index.addPost(title.value, message.value, postType.value, userID, email)).toHaveBeenCalledTimes(1);
-//       // expect(index.addPost).toHaveBeenCalledWith('Post', 'este es el post', 'habito', 'habito.jpg', '123456', 'test@example.com');
-
-//       done();
-//     });
-//   });
-// });
-
-// // describe('addLike', () => {
-// //   test('verificar que el like se agregue al post', () => {
-// //     const DOM = document.createElement('section');
-// //     const postSection = jest.fn();
-// //     DOM.append(index.addLike(postSection));
-
-// //     const btnLike = DOM.querySelector('#button-like');
-// //     btnLike.click();
-
-// //     expect(postSection).toHaveBeenCalled(1);
-// //     expect(index.addLike).toHaveBeenCalledWith({
-// //       likes: ['user-id'],
-// //     });
-// //   });
-// // });
