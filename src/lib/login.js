@@ -7,18 +7,18 @@ export const renderLogin = (navigateTo) => {
         <h1 class="login"> Ingresa </h1>
         <form class="containers-button">
             <input type="email" id="email" class="input-email" placeholder="Escribe tu correo"> </input>
-            <input type="password" id="pass" class="input-pass" placeholder="Esribe tu contraseña"></input>
+            <input type="password" id="pass" class="input-pass" placeholder="Escribe tu contraseña"></input>
             <button id="submit" class="button-indextwo"> Inicia sesión </button>
-        </form>
-        <button id="go-google" class="button-second"> Ingresar con Google </button>
-        <div>
-            <span class="span-login"> ¿No tienes cuenta? </span>
-            <button id="go-signup" class="button-third"> Regístrate </button>   
-        </div>
-    `;
+            </form>
+            <button id="go-google" class="button-second"> Ingresar con Google </button>
+            <div>
+                <span class="span-login"> ¿No tienes cuenta? </span>
+                <button id="go-signup" class="button-third"> Regístrate </button>   
+            </div>
+        `;
   section.innerHTML = template;
-
   const buttonGoSignup = section.querySelector('#go-signup');
+
   buttonGoSignup.addEventListener('click', () => {
     navigateTo('/signup');
   });
@@ -31,7 +31,7 @@ export const renderLogin = (navigateTo) => {
       .then(() => {
         navigateTo('/home');
         /* const user = userCredential.user;
-        console.log(user); */
+          console.log(user); */
       })
       .catch((error) => {
         // Aquí vamos a manejar los errores
