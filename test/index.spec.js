@@ -7,7 +7,6 @@ import { renderSignup } from '../src/lib/signup.js';
 import { renderWall } from '../src/lib/wall.js';
 // import { addLike } from '../src/lib/index.js';
 import * as index from '../src/lib/index.js';
-import { renderWall } from '../src/lib/wall.js';
 
 // jest.mock('../src/lib/index.js', () => (
 //   {
