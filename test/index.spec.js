@@ -9,6 +9,7 @@ import { renderWall } from '../src/lib/wall.js';
 // jest.mock('../src/lib/index.js', () => (
 //   {
 //     submitNewUserInfo: jest.fn(() => Promise.resolve()),
+//     addLike: jest.fn(()=>),
 //   }
 // ));
 
@@ -59,7 +60,29 @@ describe('button Go', (done) => {
     });
   });
 });
+describe('button Like', (done) => {
+  test('despues de llamar boton like debe ejecutarse la función addLike', () => {
+    jest.spyOn(index, 'addLike').mockImplementation(() => Promise.resolve({}));
+    const DOM = document.createElement('section');
+    DOM.append(renderWall());
+    const buttonLike = DOM.querySelector('#button-like');
+    const mock = jest.fn();
+    const element = { id: '5vMJEBWbmK5QH5JfNUyM' };
+    DOM.append(renderWall(mock));
+    console.log(buttonLike);
 
+    /* let docID;
+    let userID;
+    docID = '5vMJEBWbmK5QH5JfNUyM';
+    userID = 'iMoLjxbUuKWTnvhHjBN2aKLOnUG3'; */
+
+    buttonLike.click();
+    setTimeout(() => {
+      expect(mock).toHaveBeenLastCalledWith('5vMJEBWbmK5QH5JfNUyM');
+      done();
+    });
+  });
+});
 describe('button Edit', () => {
   test('después de llamar boton editar debe actualizarse el mensaje', async () => {
     const spyEditPost = jest.spyOn(index, 'editPost').mockImplementation(() => Promise.resolve({ message: 'success' }));
