@@ -174,7 +174,7 @@ body {
     background-color: transparent;
     height: 45px;
     width: 45px;
-    margin-left: 65%;
+    margin-left: 200%;
 }
 .log-outWall {
     background: none; 
@@ -183,7 +183,8 @@ body {
 }
 .logout-imagesWall {
     width: 20%;
-    margin-right: 50%;
+
+    margin-right: 10%;
 } 
 .wallSectionInput {
     display: contents;

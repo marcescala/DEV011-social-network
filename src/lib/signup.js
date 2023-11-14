@@ -1,9 +1,11 @@
 import { callLoginGoogle, submitNewUserInfo } from './index.js';
+import Img_logo_habitate from '../../src/Images/logo-habitate.png';
+
 
 export const renderSignup = (navigateTo) => {
   const section = document.createElement('section');
   const template = `
-        <img class="logo" src="Images/logo-habitate.png">
+        <img class="logo" src=${Img_logo_habitate}>
         <h1 class="signup"> Registrate </h1>
         <form class="containers-button">
              <input type ="email" id="email" class="input-email" autocomplete="on" placeholder="Escribe tu correo"> </input>

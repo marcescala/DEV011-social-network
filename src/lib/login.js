@@ -1,9 +1,10 @@
 import { callLoginGoogle, submitUserInfo } from './index.js';
+import Img_logo_habitate from '../../src/Images/logo-habitate.png';
 
 export const renderLogin = (navigateTo) => {
   const section = document.createElement('section');
   const template = `
-        <img class="logo" src="Images/logo-habitate.png">
+        <img class="logo" src=${Img_logo_habitate}>
         <h1 class="login"> Ingresa </h1>
         <form class="containers-button">
             <input type="email" id="email" class="input-email" placeholder="Escribe tu correo"> </input>

@@ -1,33 +1,37 @@
 import {
-  addPost, renderRealTime, /* deletePost, */ addLike, authUser, editPost, auth, cerrarSesion, uploadFile,
+  addPost, renderRealTime, deletePost, addLike, authUser, editPost, auth, cerrarSesion, uploadFile,
 } from './index.js';
+import Img_logo_habitate_largo from '../Images/logo_habitate_largo.png';
+import Img_refresh from '../Images/refresh_posts.png';
+import Img_logout from '../Images/logout_habitate.png';
+import Img_recetas from '../Images/recetas_habitate.png';
+import Img_remedios from '../Images/remedios_habitate.png';
+import Img_habitos from '../Images/habitos_habitate.png';
+import Img_apple from '../Images/manzana_like.png';
 
 export const renderWall = (navigateTo) => {
   const section = document.createElement('section');
   const template = `
         <header class="wallbody">
-          <div>
-               <img class="logo-wall" src="Images/logo_habitate_largo.png">
-          </div>
-          <div class="buttons-wall"
-            <button id="go-home" class="button-home"> 
-               <img src="Images/refresh-post.jpeg" class="image-home">
+          <img class="logo-wall" src=${Img_logo_habitate_largo}>
+          
+            <button id="go-home" class="button-home"  > 
+              <img src=${Img_refresh} class="image-home">
             </button> 
             <button id="log-outWall" class="log-outWall" name="logoutWall">
-               <img src="Images/logout_habitate.png" class="logout-imagesWall">
+              <img src=${Img_logout} class="logout-imagesWall">
             </button>
-          </div>
           <div>
-            <button id="button-recipes" class="button-recipes" name="recetas" > 
-                <img src="Images/recetas_habitate.png" class="home-images">
+          <button id="button-recipes" class="button-recipes" name="recetas" > 
+                <img src=${Img_recetas} class="home-images">
                 <span> Recetas </span>
             </button>
-            <button id="button-remedies" class="button-remedies" name="remedios" > 
-                <img src="Images/remedios_habitate.png" class="home-images">
-                <span> Remedios Caseros </span>
-            </button>
+          <button id="button-remedies" class="button-remedies" name="remedios" > 
+            <img src=${Img_remedios} class="home-images">
+            <span> Remedios Caseros </span>
+           </button>
            <button id="button-habits" class="button-habits" name="habitos" > 
-                <img src="Images/habitos_habitate.png" class="home-images">
+                <img src=${Img_habitos} class="home-images">
                 <span> Hábitos Saludables </span>
             </button>
           </div>
@@ -40,8 +44,9 @@ export const renderWall = (navigateTo) => {
             <div class="wallSection" >
             </div>
           </body>
-          </section> 
-          `;
+        </section> 
+      `;
+
 
   // Por ahora estoy creando aquí la sección de los post para poder empezar, posteriormente irá en una ventana pop up
   section.innerHTML = template;
@@ -127,9 +132,9 @@ export const renderWall = (navigateTo) => {
       if (imgInput.files.length > 0) {
         const imagePost = imgInput.files[0];
         const imageName = imagePost.name;
-        console.log(imagePost, imageName);
+        // console.log(imagePost, imageName);
         const image = await uploadFile(imageName, imagePost);
-        console.log(image);
+        // console.log(image);
         addPost(title.value, message.value, postTypeSel.value, image, userID, userEmail);
       } else {
         addPost(title.value, message.value, postTypeSel.value, '', userID, userEmail);
@@ -140,103 +145,106 @@ export const renderWall = (navigateTo) => {
       alert('El mensaje no puede estar vacío');
     }
   });
-
+  const renderPost = (element) => {
+    const docID = element.id;
+    const userID = authUser().uid;
+    const post = document.createElement('div');
+    post.className = 'post-style';
+    post.id = 'post';
+    const userEmail = document.createElement('p');
+    userEmail.className = 'user-email';
+    userEmail.innerText = element.data().email;
+    const messageContainer = document.createElement('div');
+    messageContainer.className = 'message-container';
+    const postTitle = document.createElement('p');
+    postTitle.innerHTML = element.data().title;
+    const postMessage = document.createElement('p');
+    postMessage.innerHTML = element.data().message;
+    postMessage.className = 'post-message-style';
+    const imgPost = document.createElement('img');
+    imgPost.src = element.data().image;
+    imgPost.className = 'img-post';
+    const btnEdit = document.createElement('button');
+    btnEdit.id = 'button-edit';
+    btnEdit.className = 'button-edit';
+    btnEdit.innerText = 'Editar';
+    const btnDelete = document.createElement('button');
+    btnDelete.id = 'button-delete';
+    btnDelete.className = 'button-delete';
+    btnDelete.innerText = 'Eliminar';
+    const btnLike = document.createElement('button');
+    btnLike.id = 'button-like';
+    btnLike.className = 'button-like';
+    const apple = document.createElement('img');
+    apple.src = Img_apple;
+    apple.className = 'img-like';
+    if (element.data().likes.includes(userID)) {
+      apple.style.opacity = 1;
+    } else {
+      apple.style.opacity = 0.5;
+    }
+    const counter = document.createElement('span');
+    counter.innerText = element.data().likes.length;
+    btnLike.append(apple);
+    messageContainer.append(postTitle, postMessage, imgPost);
+    post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
+    postSection.append(post);
+    btnDelete.addEventListener('click', () => {
+      const userID = authUser().uid;
+      const postUser = element.data().user;
+      console.log(userID, postUser);
+      if (postUser === userID) {
+        const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
+        if (confirmDelete) {
+          deletePost(docID);
+        }
+      } else {
+        alert('Solo el autor original puede eliminar el post');
+      }
+    });
+    btnLike.addEventListener('click', () => {
+      // const user = authUser();
+      // const userID = user.uid;
+      addLike(docID, userID);
+    });
+    btnEdit.addEventListener('click', () => {
+      // const userID = authUser().uid;
+      const postUser = element.data().user;
+      if (postUser === userID) {
+        const createInput = () => {
+          const inputEdit = document.createElement('input');
+          inputEdit.type = 'text';
+          inputEdit.className = 'input-edit';
+          inputEdit.id = 'input-edit';
+          inputEdit.value = element.data().message;
+          messageContainer.insertBefore(inputEdit, postMessage);
+          messageContainer.removeChild(postMessage);
+        };
+        const buttonEditPost = () => {
+          const inputEdit = wallSection.querySelector('#input-edit');
+          editPost(docID, inputEdit.value);
+          postMessage.innerHTML = element.data().message;
+          messageContainer.insertBefore(postMessage, inputEdit);
+          messageContainer.removeChild(inputEdit);
+          btnEdit.textContent = 'Editar';
+        };
+        if (btnEdit.textContent === 'Editar') {
+          createInput();
+          btnEdit.textContent = 'Guardar';
+          btnEdit.removeEventListener('click', buttonEditPost);
+          btnEdit.addEventListener('click', createInput);
+        } else {
+          buttonEditPost();
+        }
+      } else {
+        alert('Solo el autor original puede editar el post');
+      }
+    });
+  };
   renderRealTime((querySnapshot) => {
     postSection.textContent = '';
     querySnapshot.forEach((element) => {
-      const docID = element.id;
-      const userID = authUser().uid;
-      const post = document.createElement('div');
-      post.className = 'post-style';
-      post.id = 'post';
-      const userEmail = document.createElement('p');
-      userEmail.className = 'user-email';
-      userEmail.innerText = element.data().email;
-      const messageContainer = document.createElement('div');
-      messageContainer.className = 'message-container';
-      const postTitle = document.createElement('p');
-      postTitle.innerHTML = element.data().title;
-      const postMessage = document.createElement('p');
-      postMessage.innerHTML = element.data().message;
-      postMessage.className = 'post-message-style';
-      const imgPost = document.createElement('img');
-      imgPost.src = element.data().image;
-      imgPost.className = 'img-post';
-      const btnEdit = document.createElement('button');
-      btnEdit.id = 'button-edit';
-      btnEdit.className = 'button-edit';
-      btnEdit.innerText = 'Editar';
-      const btnDelete = document.createElement('button');
-      btnDelete.id = 'button-delete';
-      btnDelete.className = 'button-delete';
-      btnDelete.innerText = 'Eliminar';
-      const btnLike = document.createElement('button');
-      btnLike.id = 'button-like';
-      btnLike.className = 'button-like';
-      const apple = document.createElement('img');
-      apple.src = 'Images/manzana_like.png';
-      apple.className = 'img-like';
-      if (element.data().likes.includes(userID)) {
-        apple.style.opacity = 1;
-      } else {
-        apple.style.opacity = 0.5;
-      }
-      const counter = document.createElement('span');
-      counter.innerText = element.data().likes.length;
-      btnLike.append(apple);
-      messageContainer.append(postTitle, postMessage, imgPost);
-      post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
-      postSection.append(post);
-      /* btnDelete.addEventListener('click', () => {
-        const userID = authUser().uid;
-        const postUser = element.data().user;
-        console.log(userID, postUser);
-        if (postUser === userID) {
-          const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
-          if (confirmDelete) {
-            deletePost(docID);
-          }
-        } else {
-          alert('Solo el autor original puede eliminar el post');
-        }
-      }); */
-      btnLike.addEventListener('click', () => {
-        const user = authUser();
-        addLike(docID, user.uid, apple);
-      });
-      btnEdit.addEventListener('click', () => {
-        // const userID = authUser().uid;
-        const postUser = element.data().user;
-        if (postUser === userID) {
-          const createInput = () => {
-            const inputEdit = document.createElement('input');
-            inputEdit.type = 'text';
-            inputEdit.className = 'input-edit';
-            inputEdit.id = 'input-edit';
-            inputEdit.value = element.data().message;
-            messageContainer.insertBefore(inputEdit, postMessage);
-            messageContainer.removeChild(postMessage);
-          };
-          const buttonEditPost = () => {
-            const inputEdit = wallSection.querySelector('#input-edit');
-            editPost(docID, inputEdit.value);
-            postMessage.innerHTML = element.data().message;
-            messageContainer.insertBefore(postMessage, inputEdit);
-            messageContainer.removeChild(inputEdit);
-            btnEdit.textContent = 'Editar';
-          };
-          if (btnEdit.textContent === 'Editar') {
-            createInput();
-            btnEdit.textContent = 'Guardar';
-            btnEdit.removeEventListener('click', buttonEditPost);
-            btnEdit.addEventListener('click', createInput);
-          } else {
-            buttonEditPost();
-          }
-        } else {
-          alert('Solo el autor original puede editar el post');
-        }
-      });
+      renderPost(element);
     });
   });
   const buttonLogOut = section.querySelector('#log-outWall');
@@ -245,105 +253,13 @@ export const renderWall = (navigateTo) => {
     navigateTo('/');
   });
 
-  // Agrega el evento para direccionar al home de nuevo
+  // Agrega el evento para cargar todos los comentarios de nuevo (limpiar el filtro)
   const buttonHome = section.querySelector('#go-home');
   buttonHome.addEventListener('click', () => {
     renderRealTime((querySnapshot) => {
       postSection.textContent = '';
       querySnapshot.forEach((element) => {
-        const docID = element.id;
-        const userID = authUser().uid;
-        const post = document.createElement('div');
-        post.className = 'post-style';
-        post.id = 'post';
-        const userEmail = document.createElement('p');
-        userEmail.className = 'user-email';
-        userEmail.innerText = element.data().email;
-        const messageContainer = document.createElement('div');
-        messageContainer.className = 'message-container';
-        const postTitle = document.createElement('p');
-        postTitle.innerHTML = element.data().title;
-        const postMessage = document.createElement('p');
-        postMessage.innerHTML = element.data().message;
-        postMessage.className = 'post-message-style';
-        const imgPost = document.createElement('img');
-        imgPost.src = element.data().image;
-        imgPost.className = 'img-post';
-        const btnEdit = document.createElement('button');
-        btnEdit.id = 'button-edit';
-        btnEdit.className = 'button-edit';
-        btnEdit.innerText = 'Editar';
-        const btnDelete = document.createElement('button');
-        btnDelete.id = 'button-delete';
-        btnDelete.className = 'button-delete';
-        btnDelete.innerText = 'Eliminar';
-        const btnLike = document.createElement('button');
-        btnLike.id = 'button-like';
-        btnLike.className = 'button-like';
-        const apple = document.createElement('img');
-        apple.src = 'Images/manzana_like.png';
-        apple.className = 'img-like';
-        if (element.data().likes.includes(userID)) {
-          apple.style.opacity = 1;
-        } else {
-          apple.style.opacity = 0.5;
-        }
-        const counter = document.createElement('span');
-        counter.innerText = element.data().likes.length;
-        btnLike.append(apple);
-        messageContainer.append(postTitle, postMessage, imgPost);
-        post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
-        postSection.append(post);
-        /* btnDelete.addEventListener('click', () => {
-         const userID = authUser().uid;
-         const postUser = element.data().user;
-         console.log(userID, postUser);
-         if (postUser === userID) {
-           const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
-           if (confirmDelete) {
-             deletePost(docID);
-           }
-         } else {
-           alert('Solo el autor original puede eliminar el post');
-         }
-       }); */
-        btnLike.addEventListener('click', () => {
-          const user = authUser();
-          addLike(docID, user.uid, apple);
-        });
-        btnEdit.addEventListener('click', () => {
-        // const userID = authUser().uid;
-          const postUser = element.data().user;
-          if (postUser === userID) {
-            const createInput = () => {
-              const inputEdit = document.createElement('input');
-              inputEdit.type = 'text';
-              inputEdit.className = 'input-edit';
-              inputEdit.id = 'input-edit';
-              inputEdit.value = element.data().message;
-              messageContainer.insertBefore(inputEdit, postMessage);
-              messageContainer.removeChild(postMessage);
-            };
-            const buttonEditPost = () => {
-              const inputEdit = wallSection.querySelector('#input-edit');
-              editPost(docID, inputEdit.value);
-              postMessage.innerHTML = element.data().message;
-              messageContainer.insertBefore(postMessage, inputEdit);
-              messageContainer.removeChild(inputEdit);
-              btnEdit.textContent = 'Editar';
-            };
-            if (btnEdit.textContent === 'Editar') {
-              createInput();
-              btnEdit.textContent = 'Guardar';
-              btnEdit.removeEventListener('click', buttonEditPost);
-              btnEdit.addEventListener('click', createInput);
-            } else {
-              buttonEditPost();
-            }
-          } else {
-            alert('Solo el autor original puede editar el post');
-          }
-        });
+        renderPost(element);
       });
     });
   });
@@ -353,99 +269,7 @@ export const renderWall = (navigateTo) => {
       postSection.textContent = '';
       querySnapshot.forEach((element) => {
         if (element.data().postType.includes('remedio')) {
-          const docID = element.id;
-          const userID = authUser().uid;
-          const post = document.createElement('div');
-          post.className = 'post-style';
-          post.id = 'post';
-          const userEmail = document.createElement('p');
-          userEmail.className = 'user-email';
-          userEmail.innerText = element.data().email;
-          const messageContainer = document.createElement('div');
-          messageContainer.className = 'message-container';
-          const postTitle = document.createElement('p');
-          postTitle.innerHTML = element.data().title;
-          const postMessage = document.createElement('p');
-          postMessage.innerHTML = element.data().message;
-          postMessage.className = 'post-message-style';
-          const imgPost = document.createElement('img');
-          imgPost.src = element.data().image;
-          imgPost.className = 'img-post';
-          const btnEdit = document.createElement('button');
-          btnEdit.id = 'button-edit';
-          btnEdit.className = 'button-edit';
-          btnEdit.innerText = 'Editar';
-          const btnDelete = document.createElement('button');
-          btnDelete.id = 'button-delete';
-          btnDelete.className = 'button-delete';
-          btnDelete.innerText = 'Eliminar';
-          const btnLike = document.createElement('button');
-          btnLike.id = 'button-like';
-          btnLike.className = 'button-like';
-          const apple = document.createElement('img');
-          apple.src = 'Images/manzana_like.png';
-          apple.className = 'img-like';
-          if (element.data().likes.includes(userID)) {
-            apple.style.opacity = 1;
-          } else {
-            apple.style.opacity = 0.5;
-          }
-          const counter = document.createElement('span');
-          counter.innerText = element.data().likes.length;
-          btnLike.append(apple);
-          messageContainer.append(postTitle, postMessage, imgPost);
-          post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
-          postSection.append(post);
-          /* btnDelete.addEventListener('click', () => {
-            const userID = authUser().uid;
-            const postUser = element.data().user;
-            console.log(userID, postUser);
-            if (postUser === userID) {
-              const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
-              if (confirmDelete) {
-                deletePost(docID);
-              }
-            } else {
-              alert('Solo el autor original puede eliminar el post');
-            }
-          }); */
-          btnLike.addEventListener('click', () => {
-            const user = authUser();
-            addLike(docID, user.uid, apple);
-          });
-          btnEdit.addEventListener('click', () => {
-            // const userID = authUser().uid;
-            const postUser = element.data().user;
-            if (postUser === userID) {
-              const createInput = () => {
-                const inputEdit = document.createElement('input');
-                inputEdit.type = 'text';
-                inputEdit.className = 'input-edit';
-                inputEdit.id = 'input-edit';
-                inputEdit.value = element.data().message;
-
-                messageContainer.insertBefore(inputEdit, postMessage);
-                messageContainer.removeChild(postMessage);
-              };
-              const buttonEditPost = () => {
-                const inputEdit = wallSection.querySelector('#input-edit');
-                editPost(docID, inputEdit.value);
-                postMessage.innerHTML = element.data().message;
-                messageContainer.insertBefore(postMessage, inputEdit);
-                btnEdit.textContent = 'Editar';
-              };
-              if (btnEdit.textContent === 'Editar') {
-                createInput();
-                btnEdit.textContent = 'Guardar';
-                btnEdit.removeEventListener('click', buttonEditPost);
-                btnEdit.addEventListener('click', createInput);
-              } else {
-                buttonEditPost();
-              }
-            } else {
-              alert('Solo el autor original puede editar el post');
-            }
-          });
+          renderPost(element);
         }
       });
     });
@@ -457,99 +281,7 @@ export const renderWall = (navigateTo) => {
       console.log(querySnapshot);
       querySnapshot.forEach((element) => {
         if (element.data().postType.includes('receta')) {
-          const docID = element.id;
-          const userID = authUser().uid;
-          const post = document.createElement('div');
-          post.className = 'post-style';
-          post.id = 'post';
-          const userEmail = document.createElement('p');
-          userEmail.className = 'user-email';
-          userEmail.innerText = element.data().email;
-          const messageContainer = document.createElement('div');
-          messageContainer.className = 'message-container';
-          const postTitle = document.createElement('p');
-          postTitle.innerHTML = element.data().title;
-          const postMessage = document.createElement('p');
-          postMessage.innerHTML = element.data().message;
-          postMessage.className = 'post-message-style';
-          const imgPost = document.createElement('img');
-          imgPost.src = element.data().image;
-          imgPost.className = 'img-post';
-          const btnEdit = document.createElement('button');
-          btnEdit.id = 'button-edit';
-          btnEdit.className = 'button-edit';
-          btnEdit.innerText = 'Editar';
-          const btnDelete = document.createElement('button');
-          btnDelete.id = 'button-delete';
-          btnDelete.className = 'button-delete';
-          btnDelete.innerText = 'Eliminar';
-          const btnLike = document.createElement('button');
-          btnLike.id = 'button-like';
-          btnLike.className = 'button-like';
-          const apple = document.createElement('img');
-          apple.src = 'Images/manzana_like.png';
-          apple.className = 'img-like';
-          if (element.data().likes.includes(userID)) {
-            apple.style.opacity = 1;
-          } else {
-            apple.style.opacity = 0.5;
-          }
-          const counter = document.createElement('span');
-          counter.innerText = element.data().likes.length;
-          btnLike.append(apple);
-          messageContainer.append(postTitle, postMessage, imgPost);
-          post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
-          postSection.append(post);
-          /* btnDelete.addEventListener('click', () => {
-            const userID = authUser().uid;
-            const postUser = element.data().user;
-            console.log(userID, postUser);
-            if (postUser === userID) {
-              const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
-              if (confirmDelete) {
-                deletePost(docID);
-              }
-            } else {
-              alert('Solo el autor original puede eliminar el post');
-            }
-          }); */
-          btnLike.addEventListener('click', () => {
-            const user = authUser();
-            addLike(docID, user.uid, apple);
-          });
-          btnEdit.addEventListener('click', () => {
-            // const userID = authUser().uid;
-            const postUser = element.data().user;
-            if (postUser === userID) {
-              const createInput = () => {
-                const inputEdit = document.createElement('input');
-                inputEdit.type = 'text';
-                inputEdit.className = 'input-edit';
-                inputEdit.id = 'input-edit';
-                inputEdit.value = element.data().message;
-                messageContainer.insertBefore(inputEdit, postMessage);
-                messageContainer.removeChild(postMessage);
-              };
-              const buttonEditPost = () => {
-                const inputEdit = wallSection.querySelector('#input-edit');
-                editPost(docID, inputEdit.value);
-                postMessage.innerHTML = element.data().message;
-                messageContainer.insertBefore(postMessage, inputEdit);
-                messageContainer.removeChild(inputEdit);
-                btnEdit.textContent = 'Editar';
-              };
-              if (btnEdit.textContent === 'Editar') {
-                createInput();
-                btnEdit.textContent = 'Guardar';
-                btnEdit.removeEventListener('click', buttonEditPost);
-                btnEdit.addEventListener('click', createInput);
-              } else {
-                buttonEditPost();
-              }
-            } else {
-              alert('Solo el autor original puede editar el post');
-            }
-          });
+          renderPost(element);
         }
       });
     });
@@ -558,102 +290,10 @@ export const renderWall = (navigateTo) => {
   buttonHabits.addEventListener('click', () => {
     renderRealTime((querySnapshot) => {
       postSection.textContent = '';
-      console.log(querySnapshot);
+
       querySnapshot.forEach((element) => {
         if (element.data().postType.includes('habito')) {
-          const docID = element.id;
-          const userID = authUser().uid;
-          const post = document.createElement('div');
-          post.className = 'post-style';
-          post.id = 'post';
-          const userEmail = document.createElement('p');
-          userEmail.className = 'user-email';
-          userEmail.innerText = element.data().email;
-          const messageContainer = document.createElement('div');
-          messageContainer.className = 'message-container';
-          const postTitle = document.createElement('p');
-          postTitle.innerHTML = element.data().title;
-          const postMessage = document.createElement('p');
-          postMessage.innerHTML = element.data().message;
-          postMessage.className = 'post-message-style';
-          const imgPost = document.createElement('img');
-          imgPost.src = element.data().image;
-          imgPost.className = 'img-post';
-          const btnEdit = document.createElement('button');
-          btnEdit.id = 'button-edit';
-          btnEdit.className = 'button-edit';
-          btnEdit.innerText = 'Editar';
-          const btnDelete = document.createElement('button');
-          btnDelete.id = 'button-delete';
-          btnDelete.className = 'button-delete';
-          btnDelete.innerText = 'Eliminar';
-          const btnLike = document.createElement('button');
-          btnLike.id = 'button-like';
-          btnLike.className = 'button-like';
-          const apple = document.createElement('img');
-          apple.src = 'Images/manzana_like.png';
-          apple.className = 'img-like';
-          if (element.data().likes.includes(userID)) {
-            apple.style.opacity = 1;
-          } else {
-            apple.style.opacity = 0.5;
-          }
-          const counter = document.createElement('span');
-          counter.innerText = element.data().likes.length;
-          btnLike.append(apple);
-          messageContainer.append(postTitle, postMessage, imgPost);
-          post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
-          postSection.append(post);
-          /* btnDelete.addEventListener('click', () => {
-            const userID = authUser().uid;
-            const postUser = element.data().user;
-            console.log(userID, postUser);
-            if (postUser === userID) {
-              const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
-              if (confirmDelete) {
-                deletePost(docID);
-              }
-            } else {
-              alert('Solo el autor original puede eliminar el post');
-            }
-          }); */
-          btnLike.addEventListener('click', () => {
-            const user = authUser();
-            addLike(docID, user.uid, apple);
-          });
-          btnEdit.addEventListener('click', () => {
-            // const userID = authUser().uid;
-            const postUser = element.data().user;
-            if (postUser === userID) {
-              const createInput = () => {
-                const inputEdit = document.createElement('input');
-                inputEdit.type = 'text';
-                inputEdit.className = 'input-edit';
-                inputEdit.id = 'input-edit';
-                inputEdit.value = element.data().message;
-                messageContainer.insertBefore(inputEdit, postMessage);
-                messageContainer.removeChild(postMessage);
-              };
-              const buttonEditPost = () => {
-                const inputEdit = wallSection.querySelector('#input-edit');
-                editPost(docID, inputEdit.value);
-                postMessage.innerHTML = element.data().message;
-                messageContainer.insertBefore(postMessage, inputEdit);
-                messageContainer.removeChild(inputEdit);
-                btnEdit.textContent = 'Editar';
-              };
-              if (btnEdit.textContent === 'Editar') {
-                createInput();
-                btnEdit.textContent = 'Guardar';
-                btnEdit.removeEventListener('click', buttonEditPost);
-                btnEdit.addEventListener('click', createInput);
-              } else {
-                buttonEditPost();
-              }
-            } else {
-              alert('Solo el autor original puede editar el post');
-            }
-          });
+          renderPost(element);
         }
       });
     });
