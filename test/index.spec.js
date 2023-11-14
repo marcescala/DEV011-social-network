@@ -1,6 +1,7 @@
 /**
  * @jest-environment jsdom
  */
+
 import { renderSignup } from '../src/lib/signup.js';
 import * as index from '../src/lib/index.js';
 import { renderWall } from '../src/lib/wall.js';
@@ -59,31 +60,77 @@ describe('button Go', (done) => {
   });
 });
 
-/* describe('renderWall', () => {
-  test('verifica que se agregue un post', async () => {
-    const mock = jest.fn();
+describe('button Edit', () => {
+  test('después de llamar boton editar debe actualizarse el mensaje', async () => {
+    const spyEditPost = jest.spyOn(index, 'editPost').mockImplementation(() => Promise.resolve({ message: 'success' }));
     const DOM = document.createElement('section');
-    DOM.append(renderWall(mock));
+    DOM.append(renderWall());
+    const btnEdit = DOM.querySelector('#button-edit');
 
-    //tenemos que simular un archivo
+    const createInput = jest.fn();
 
-    // toca traer todos los elementos del post: title, message, postType, image, userID, userEmail
-    const title = DOM.querySelector('#input-title');
-    const message = DOM.querySelector('#inPost');
-    const postType = DOM.querySelector('#select-type');
-    const image = DOM.querySelector('#input-file');
+    // Simula la llamada al botón editar
+    btnEdit.click();
 
-    title.value = 'Titulo';
-    message.value = 'Este es el mensaje';
-    postType.value = 'receta';
-    // se pretende que se elige el archivo
-    const userID = 'iMoLjxbUuKWTnvhHjBN2aKLOnUG3';
-    const userEmail = 'les@ejemplo.com';
+    // Espera a que se resuelva la promesa (simulación de la función editPost)
+    await Promise.resolve();
 
-    const btnSendPost = DOM.querySelector('#button-sendPost');
-    btnSendPost.click();
-    const post = await index.addPost(title.value, message.value, postType.value, image.files[0], userID, userEmail);
-    expect(post).toBe(true);
+    // Asegúrate de que la función createInput haya sido llamada con los argumentos correctos
+    expect(createInput).toHaveBeenCalledWith(1);
+
+    // Restaura la implementación original de editPost
+    spyEditPost.mockRestore();
+  });
+});
+
+test('have a button ', () => {
+  const DOM = document.createElement('section');
+  DOM.append(renderWall());
+  const haveAButton = DOM.querySelector('#button-edit');
+  expect(haveAButton).not.toBe(undefined);
+});
+
+/* describe('button Edit', (done) => {
+  test('despues de llamar boton editar debe actualizarse el mensaje', () => {
+    jest.spyOn(index, 'editPost').mockImplementation(() => Promise.resolve({ message: 'success' }));
+    const DOM = document.createElement('section');
+    DOM.append(renderWall());
+    const btnEdit = DOM.querySelector('#button-edit');
+
+    const createInput = jest.fn();
+
+    btnEdit.click();
+    setTimeout(() => {
+      expect(createInput).toHaveBeenLastCalledWith(1);
+      done();
+    });
   });
 }); */
+/* describe('addLike', async () => {
+  test('agrega un like correctamente', async () => {
+    const docRefMock = doc();
+    const getDocMock = jest.fn();
+    const updateDocMock = jest.fn();
+    const DOM = document.createElement('section');
+    DOM.append(wall(mock));
 
+    getDocMock.mockResolvedValue({
+      exists: jest.fn().mockReturnValue(true),
+      data: jest.fn().mockReturnValue({ likes: ['userID1', 'userID2'] }),
+    });
+
+    doc.mockReturnValue(docRefMock);
+    getDoc.mockImplementation(getDocMock);
+    updateDoc.mockImplementation(updateDocMock);
+
+    // Ejecuta tu función con valores de prueba
+    await addLike('id', 'userID');
+
+    // Verifica que las funciones se hayan llamado con los argumentos correctos
+    expect(doc).toHaveBeenCalledWith(docRefMock, 'id', 'userID');
+    expect(getDocMock).toHaveBeenCalledWith(docRefMock);
+    expect(updateDocMock).toHaveBeenCalledWith(docRefMock, {
+      likes: arrayUnion('userID3'),
+    });
+  });
+}); */

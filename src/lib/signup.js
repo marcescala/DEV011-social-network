@@ -29,7 +29,7 @@ export const renderSignup = (navigateTo) => {
         // Signed in
         const user = userCredential.user;
         console.log(user.email);
-        navigateTo('/home');
+        navigateTo('/wall');
         // ...
       }).catch((error) => {
         // Aquí vamos a manejar los errores
@@ -51,7 +51,7 @@ export const renderSignup = (navigateTo) => {
   buttonGoogleS.addEventListener('click', () => {
     callLoginGoogle()
       .then((result) => {
-        navigateTo('/home');
+        navigateTo('/wall');
         // const credential = GoogleAuthProvider.credentialFromResult(result);
         const user = result.user;
         console.log(user);
