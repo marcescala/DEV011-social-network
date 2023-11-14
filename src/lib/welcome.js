@@ -1,7 +1,9 @@
+import Img_logo_habitate from '../../src/Images/logo-habitate.png';
+
 export const renderWelcome = (navigateTo) => {
   const section = document.createElement('section');
   const template = `
-        <img class="logo" src="Images/logo-habitate.png">
+        <img class="logo" src=${Img_logo_habitate}>
         <h1 class="welcome"> Bienvenida </h1>
         <p class="slogan"> Alimenta tu bienestar </p>
         <p class="slogan"> Alimenta tu comunidad </p>
