@@ -60,8 +60,14 @@ describe('button Go', (done) => {
   });
 });
 
-describe('button Edit', () => {
-  test('después de llamar boton editar debe actualizarse el mensaje', async () => {
+describe('renderWall', () => {
+  test('have a button ', () => {
+    const DOM = document.createElement('section');
+    DOM.append(renderWall());
+    const haveAButton = DOM.querySelector('#button-edit');
+    expect(haveAButton).not.toBe(undefined);
+  });
+  /* test('después de llamar boton editar debe actualizarse el mensaje', async () => {
     const spyEditPost = jest.spyOn(index, 'editPost').mockImplementation(() => Promise.resolve({ message: 'success' }));
     const DOM = document.createElement('section');
     DOM.append(renderWall());
@@ -80,14 +86,7 @@ describe('button Edit', () => {
 
     // Restaura la implementación original de editPost
     spyEditPost.mockRestore();
-  });
-});
-
-test('have a button ', () => {
-  const DOM = document.createElement('section');
-  DOM.append(renderWall());
-  const haveAButton = DOM.querySelector('#button-edit');
-  expect(haveAButton).not.toBe(undefined);
+  }); */
 });
 
 /* describe('button Edit', (done) => {

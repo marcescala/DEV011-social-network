@@ -29,7 +29,7 @@ export const renderLogin = (navigateTo) => {
     event.preventDefault();
     submitUserInfo(email.value, password.value)
       .then(() => {
-        navigateTo('/home');
+        navigateTo('/wall');
         /* const user = userCredential.user;
           console.log(user); */
       })
@@ -49,7 +49,7 @@ export const renderLogin = (navigateTo) => {
   buttonGoogleL.addEventListener('click', () => {
     callLoginGoogle()
       .then(() => {
-        navigateTo('/home');
+        navigateTo('/wall');
         // const credential = GoogleAuthProvider.credentialFromResult(result);
         /* const user = result.user;
         console.log(user); */
