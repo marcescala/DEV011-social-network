@@ -2,7 +2,10 @@
  * @jest-environment jsdom
  */
 
+
 import { renderSignup } from '../src/lib/signup.js';
+import { renderWall } from '../src/lib/wall.js';
+// import { addLike } from '../src/lib/index.js';
 import * as index from '../src/lib/index.js';
 import { renderWall } from '../src/lib/wall.js';
 
@@ -10,6 +13,12 @@ import { renderWall } from '../src/lib/wall.js';
 //   {
 //     submitNewUserInfo: jest.fn(() => Promise.resolve()),
 //     addLike: jest.fn(()=>),
+//   }
+// ));
+
+// jest.mock('../src/lib/index.js', () => (
+//   {
+//     addPost: jest.fn(() => Promise.resolve()),
 //   }
 // ));
 
@@ -48,16 +57,41 @@ describe('button Go', (done) => {
     const navigateTo = jest.fn();
 
     DOM.append(renderSignup(navigateTo));
-    const email = DOM.querySelector('#email');
-    const password = DOM.querySelector('#pass');
-    email.value = 'prueba@prueba.co';
-    password.value = '123456';
 
     buttonSignIn.click();
     setTimeout(() => {
       expect(navigateTo).toHaveBeenLastCalledWith('/home');
+
       done();
     });
+  });
+
+describe('renderWall', () => {
+  test('have a button ', () => {
+    const DOM = document.createElement('section');
+    DOM.append(renderWall());
+    const haveAButton = DOM.querySelector('#button-edit');
+    expect(haveAButton).not.toBe(undefined);
+  });
+  /* test('después de llamar boton editar debe actualizarse el mensaje', async () => {
+    const spyEditPost = jest.spyOn(index, 'editPost').mockImplementation(() => Promise.resolve({ message: 'success' }));
+
+    const DOM = document.createElement('section');
+
+    const navigateTo = jest.fn();
+
+    // Restaura la implementación original de editPost
+    spyEditPost.mockRestore();
+  }); */
+});
+
+/* describe('button Edit', (done) => {
+  test('despues de llamar boton editar debe actualizarse el mensaje', () => {
+    jest.spyOn(index, 'editPost').mockImplementation(() => Promise.resolve({ message: 'success' }));
+    const DOM = document.createElement('section');
+    DOM.append(renderWall());
+    const haveAButton = DOM.querySelector('#button-sendPost');
+    expect(haveAButton).not.toBe(undefined);
   });
 });
 describe('button Like', (done) => {

@@ -13,7 +13,6 @@ export const renderWall = (navigateTo) => {
   const section = document.createElement('section');
   const template = `
         <header class="wallbody">
-        
           <img class="logo-wall" src=${Img_logo_habitate_largo}>
           
             <button id="go-home" class="button-home"  > 
@@ -47,6 +46,7 @@ export const renderWall = (navigateTo) => {
           </body>
         </section> 
       `;
+
 
   // Por ahora estoy creando aquí la sección de los post para poder empezar, posteriormente irá en una ventana pop up
   section.innerHTML = template;
@@ -145,7 +145,6 @@ export const renderWall = (navigateTo) => {
       alert('El mensaje no puede estar vacío');
     }
   });
-
   const renderPost = (element) => {
     const docID = element.id;
     const userID = authUser().uid;
@@ -291,6 +290,7 @@ export const renderWall = (navigateTo) => {
   buttonHabits.addEventListener('click', () => {
     renderRealTime((querySnapshot) => {
       postSection.textContent = '';
+
       querySnapshot.forEach((element) => {
         if (element.data().postType.includes('habito')) {
           renderPost(element);
