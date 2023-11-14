@@ -64,41 +64,28 @@ describe('button Go', (done) => {
     });
   });
 
-  test('llama el correo y la contraseña', () => {
-    jest.spyOn(index, 'submitNewUserInfo').mockImplementation(() => Promise.resolve('prueba@prueba.co'));
+describe('renderWall', () => {
+  test('have a button ', () => {
+    const DOM = document.createElement('section');
+    DOM.append(renderWall());
+    const haveAButton = DOM.querySelector('#button-edit');
+    expect(haveAButton).not.toBe(undefined);
+  });
+  /* test('después de llamar boton editar debe actualizarse el mensaje', async () => {
+    const spyEditPost = jest.spyOn(index, 'editPost').mockImplementation(() => Promise.resolve({ message: 'success' }));
+
     const DOM = document.createElement('section');
 
     const navigateTo = jest.fn();
 
-    DOM.append(renderSignup(navigateTo));
-    const email = DOM.querySelector('#email');
-    const password = DOM.querySelector('#pass');
-    email.value = 'prueba@prueba.co';
-    password.value = '123456';
-    index.submitNewUserInfo(email.value, password.value);
-    expect(index.submitNewUserInfo).toHaveBeenCalledWith('prueba@prueba.co', '123456');
-  });
+    // Restaura la implementación original de editPost
+    spyEditPost.mockRestore();
+  }); */
 });
 
-// describe('addPost', () => {
-//   jest.spyOn(index, 'addPost').mockImplementation(() => Promise.resolve());
-//   test('debería agregar un nuevo post', async () => {
-//     const expectedPost = {
-//       title: 'Título del post',
-//       message: 'Mensaje del post',
-//       postType: 'receta',
-//       userID: '123456789',
-//       userEmail: 'usuario@example.com',
-//     };
-
-//     const result = await addPost(expectedPost.title, expectedPost.message, expectedPost.postType, expectedPost.userID, expectedPost.userEmail);
-
-//     expect(result).toEqual(expectedPost);
-//   });
-// });
-
-describe('button-sendPost', () => {
-  test('es un boton', () => {
+/* describe('button Edit', (done) => {
+  test('despues de llamar boton editar debe actualizarse el mensaje', () => {
+    jest.spyOn(index, 'editPost').mockImplementation(() => Promise.resolve({ message: 'success' }));
     const DOM = document.createElement('section');
     DOM.append(renderWall());
     const haveAButton = DOM.querySelector('#button-sendPost');

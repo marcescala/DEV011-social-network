@@ -7,7 +7,7 @@ export const renderSignup = (navigateTo) => {
         <h1 class="signup"> Registrate </h1>
         <form class="containers-button">
              <input type ="email" id="email" class="input-email" autocomplete="on" placeholder="Escribe tu correo"> </input>
-             <input type ="password" id="pass" class="input-pass" placeholder="Esribe tu contraseña"></input>
+             <input type ="password" id="pass" class="input-pass" placeholder="Escribe tu contraseña"></input>
             <button id="submit-sign-in" class="button-indextwo"> Regístrarse </button>
         </form>
         <button id="go-google-s" class="button-second"> Registrate con Google </button>
@@ -29,7 +29,7 @@ export const renderSignup = (navigateTo) => {
         // Signed in
         const user = userCredential.user;
         console.log(user.email);
-        navigateTo('/home');
+        navigateTo('/wall');
         // ...
       }).catch((error) => {
         // Aquí vamos a manejar los errores
@@ -51,7 +51,7 @@ export const renderSignup = (navigateTo) => {
   buttonGoogleS.addEventListener('click', () => {
     callLoginGoogle()
       .then((result) => {
-        navigateTo('/home');
+        navigateTo('/wall');
         // const credential = GoogleAuthProvider.credentialFromResult(result);
         const user = result.user;
         console.log(user);
