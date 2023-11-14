@@ -90,7 +90,6 @@ export const deletePost = (id) => {
 export const addLike = async (id, userID) => {
   const docRef = doc(db, 'posts', id);
   const docSnap = await getDoc(docRef);
-
   if (docSnap.exists()) {
     const likes = docSnap.data().likes;
     if (!likes.includes(userID)) {

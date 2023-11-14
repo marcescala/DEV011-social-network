@@ -6,7 +6,6 @@ import {
 import {
   getStorage, ref, getDownloadURL, uploadBytes,
 } from 'firebase/storage';
-
 import {
   getAuth,
   GoogleAuthProvider,
