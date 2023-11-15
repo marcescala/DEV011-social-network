@@ -49,7 +49,6 @@ export const renderWall = (navigateTo) => {
         </section> 
       `;
 
-
   // Por ahora estoy creando aquí la sección de los post para poder empezar, posteriormente irá en una ventana pop up
   section.innerHTML = template;
 
