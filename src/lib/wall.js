@@ -13,6 +13,7 @@ export const renderWall = (navigateTo) => {
   const section = document.createElement('section');
   const template = `
         <header class="wallbody">
+        <div class="buttons-container">
           <img class="logo-wall" src=${Img_logo_habitate_largo}>
           
             <button id="go-home" class="button-home"  > 
@@ -21,7 +22,8 @@ export const renderWall = (navigateTo) => {
             <button id="log-outWall" class="log-outWall" name="logoutWall">
               <img src=${Img_logout} class="logout-imagesWall">
             </button>
-          <div>
+        </div>
+          <div class="filter-buttons">
           <button id="button-recipes" class="button-recipes" name="recetas" > 
                 <img src=${Img_recetas} class="home-images">
                 <span> Recetas </span>
@@ -46,6 +48,8 @@ export const renderWall = (navigateTo) => {
           </body>
         </section> 
       `;
+
+
   // Por ahora estoy creando aquí la sección de los post para poder empezar, posteriormente irá en una ventana pop up
   section.innerHTML = template;
 
@@ -67,7 +71,9 @@ export const renderWall = (navigateTo) => {
       buttonGoLogin.className = 'button-second';
       displayNoLog.append(messageNoLog, buttonGoLogin);
       const header = section.querySelector('.wallbody');
+      const filterButtons = section.querySelector('.filter-buttons');
       header.append(displayNoLog);
+      header.removeChild(filterButtons);
       buttonGoLogin.addEventListener('click', () => {
         navigateTo('/login');
       });
@@ -189,7 +195,6 @@ export const renderWall = (navigateTo) => {
     postSection.append(post);
     btnDelete.addEventListener('click', () => {
       const postUser = element.data().user;
-      console.log(userID, postUser);
       if (postUser === userID) {
         const confirmDelete = confirm('¿Seguro que deseas borrar este post?');
         if (confirmDelete) {
@@ -200,12 +205,9 @@ export const renderWall = (navigateTo) => {
       }
     });
     btnLike.addEventListener('click', () => {
-      // const user = authUser();
-      // const userID = user.uid;
       addLike(docID, userID);
     });
     btnEdit.addEventListener('click', () => {
-      // const userID = authUser().uid;
       const postUser = element.data().user;
       if (postUser === userID) {
         const createInput = () => {

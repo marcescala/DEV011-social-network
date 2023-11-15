@@ -163,7 +163,7 @@ body {
 
 /* Wall */
   
-.buttons-container {
+  .buttons-container {
     display: flex;
     align-items: center; 
   }
@@ -176,7 +176,6 @@ body {
 .button-home {
     background-color: transparent;
     border: none;
-    position: relative;
 }
 .image-home {
     background-color: transparent;
@@ -190,7 +189,13 @@ body {
 .log-outWall {
     background-color: transparent;
     border: none;
+    padding: 0;
 }
+.logout-imagesWall {
+    width: 20%;
+
+    margin-right: 10%;
+} 
 .wallSectionInput {
     display: contents;
     align-content: center;
@@ -210,8 +215,6 @@ body {
 .post-message-style {
     display: flex;
     white-space: pre-line;
-    text-align: justify;
-    padding: 15px 40px;
 }
 .input-title {
     width: 60%;
@@ -228,9 +231,10 @@ body {
     margin-left: 0%;
     color: #296662;
     background-color: rgb(127, 184, 184);
-    font-size: 15px;
+    font-size: 13px;
     border-radius: 5px;
     margin-right: 5px;
+    padding: 3px 5px;
 }
 .img-post {
     width: 40%;
@@ -300,25 +304,4 @@ body {
     width: 70%;
     height: 60px;
     outline: 0px;
-    color: rgb(48, 114, 114);
 }
-@media screen and (max-width: 767px) {
-    .post-style {
-      width: 90%; 
-      margin-left: 5%; 
-      margin-right: 5%; 
-    }
-    .button-home,
-  .log-outWall {
-    margin-left: 2%;
-  }
-  }
-
-
-
-
-
-
-
-
-

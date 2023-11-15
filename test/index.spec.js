@@ -2,12 +2,16 @@
  * @jest-environment jsdom
  */
 
+<<<<<<< HEAD
+// import { signOut } from 'firebase/auth';
+=======
 
+>>>>>>> 3891d85fad26aae2aefb023b296fdbd92ddb9594
 import { renderSignup } from '../src/lib/signup.js';
 import { renderWall } from '../src/lib/wall.js';
 // import { addLike } from '../src/lib/index.js';
 import * as index from '../src/lib/index.js';
-import { renderWall } from '../src/lib/wall.js';
+// import { renderWall } from '../src/lib/wall.js';
 
 // jest.mock('../src/lib/index.js', () => (
 //   {
@@ -66,35 +70,48 @@ describe('button Go', (done) => {
     });
   });
 
-describe('renderWall', () => {
-  test('have a button ', () => {
-    const DOM = document.createElement('section');
-    DOM.append(renderWall());
-    const haveAButton = DOM.querySelector('#button-edit');
-    expect(haveAButton).not.toBe(undefined);
-  });
-  /* test('después de llamar boton editar debe actualizarse el mensaje', async () => {
-    const spyEditPost = jest.spyOn(index, 'editPost').mockImplementation(() => Promise.resolve({ message: 'success' }));
-
+  test('llama el correo y la contraseña', () => {
+    jest.spyOn(index, 'submitNewUserInfo').mockImplementation(() => Promise.resolve('prueba@prueba.co'));
     const DOM = document.createElement('section');
 
     const navigateTo = jest.fn();
 
-    // Restaura la implementación original de editPost
-    spyEditPost.mockRestore();
-  }); */
+    DOM.append(renderSignup(navigateTo));
+    const email = DOM.querySelector('#email');
+    const password = DOM.querySelector('#pass');
+    email.value = 'prueba@prueba.co';
+    password.value = '123456';
+    index.submitNewUserInfo(email.value, password.value);
+    expect(index.submitNewUserInfo).toHaveBeenCalledWith('prueba@prueba.co', '123456');
+  });
 });
 
-/* describe('button Edit', (done) => {
-  test('despues de llamar boton editar debe actualizarse el mensaje', () => {
-    jest.spyOn(index, 'editPost').mockImplementation(() => Promise.resolve({ message: 'success' }));
+// describe('addPost', () => {
+//   jest.spyOn(index, 'addPost').mockImplementation(() => Promise.resolve());
+//   test('debería agregar un nuevo post', async () => {
+//     const expectedPost = {
+//       title: 'Título del post',
+//       message: 'Mensaje del post',
+//       postType: 'receta',
+//       userID: '123456789',
+//       userEmail: 'usuario@example.com',
+//     };
+
+//     const result = await addPost(expectedPost.title, expectedPost.message, expectedPost.postType, expectedPost.userID, expectedPost.userEmail);
+
+//     expect(result).toEqual(expectedPost);
+//   });
+// });
+
+describe('button-sendPost', () => {
+  test('es un boton', () => {
     const DOM = document.createElement('section');
     DOM.append(renderWall());
     const haveAButton = DOM.querySelector('#button-sendPost');
     expect(haveAButton).not.toBe(undefined);
   });
 });
-describe('button Like', (done) => {
+/* describe('button Like', (done) => {
   test('despues de llamar boton like debe ejecutarse la función addLike', () => {
     jest.spyOn(index, 'addLike').mockImplementation(() => Promise.resolve({}));
     const DOM = document.createElement('section');
@@ -105,10 +122,10 @@ describe('button Like', (done) => {
     DOM.append(renderWall(mock));
     console.log(buttonLike);
 
-    /* let docID;
+     let docID;
     let userID;
     docID = '5vMJEBWbmK5QH5JfNUyM';
-    userID = 'iMoLjxbUuKWTnvhHjBN2aKLOnUG3'; */
+    userID = 'iMoLjxbUuKWTnvhHjBN2aKLOnUG3';
 
     buttonLike.click();
     setTimeout(() => {
