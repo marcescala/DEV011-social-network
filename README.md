@@ -6,6 +6,7 @@
 * [2. Resumen del proyecto](#2-resumen-del-proyecto)
 * [3. Definición del producto](#3-definicion-del-producto)
 
+
 ## 1. Preámbulo
 
 Instagram, Snapchat, Twitter, Facebook, Twitch, Linkedin, etc. Las redes
@@ -20,6 +21,7 @@ para químicos en la que los usuarios podían publicar artículos sobre sus
 investigaciones, comentar en los artículos de sus colegas, y filtrar artículos
 de acuerdo a determinadas etiquetas o su popularidad, lo más reciente, o lo
 más comentado.
+
 
 ## 2. Resumen del proyecto
 
@@ -36,6 +38,7 @@ Por lo tanto, en este proyecto construirás una
 [Single-page Application (SPA)](https://es.wikipedia.org/wiki/Single-page_application)
 [_responsive_](https://curriculum.laboratoria.la/es/topics/css/02-responsive) (con más de una vista / página)
 en la que podamos **leer y escribir datos**.
+
 
 ## 3. Definición del producto
 
