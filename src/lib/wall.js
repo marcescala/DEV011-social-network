@@ -46,8 +46,6 @@ export const renderWall = (navigateTo) => {
           </body>
         </section> 
       `;
-
-
   // Por ahora estoy creando aquí la sección de los post para poder empezar, posteriormente irá en una ventana pop up
   section.innerHTML = template;
 
@@ -190,7 +188,6 @@ export const renderWall = (navigateTo) => {
     post.append(userEmail, messageContainer, btnEdit, btnDelete, btnLike, counter);
     postSection.append(post);
     btnDelete.addEventListener('click', () => {
-      const userID = authUser().uid;
       const postUser = element.data().user;
       console.log(userID, postUser);
       if (postUser === userID) {
@@ -260,6 +257,7 @@ export const renderWall = (navigateTo) => {
       postSection.textContent = '';
       querySnapshot.forEach((element) => {
         renderPost(element);
+        console.log(renderPost);
       });
     });
   });
