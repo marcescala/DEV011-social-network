@@ -148,7 +148,6 @@ export const renderWall = (navigateTo) => {
       alert('El mensaje no puede estar vacío');
     }
   });
-
   const renderPost = (element) => {
     const docID = element.id;
     const userID = authUser().uid;
@@ -289,6 +288,7 @@ export const renderWall = (navigateTo) => {
   buttonHabits.addEventListener('click', () => {
     renderRealTime((querySnapshot) => {
       postSection.textContent = '';
+
       querySnapshot.forEach((element) => {
         if (element.data().postType.includes('habito')) {
           renderPost(element);

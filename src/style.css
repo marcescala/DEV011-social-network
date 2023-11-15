@@ -193,6 +193,12 @@ body {
     border: none;
 
 }
+
+.logout-imagesWall {
+    width: 20%;
+
+    margin-right: 10%;
+} 
 .wallSectionInput {
     display: contents;
     align-content: center;
@@ -304,6 +310,7 @@ body {
     width: 70%;
     height: 60px;
     outline: 0px;
+
     color: rgb(48, 114, 114);
 }
 @media screen and (max-width: 767px) {
