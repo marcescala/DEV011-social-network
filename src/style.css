@@ -163,10 +163,10 @@ body {
 
 /* Wall */
   
-  .buttons-container {
+.buttons-container {
     display: flex;
     align-items: center; 
-  }
+}
 .logo-home {
     width: 35%;
 }
