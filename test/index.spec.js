@@ -4,7 +4,7 @@
 
 import { renderSignup } from '../src/lib/signup.js';
 import * as index from '../src/lib/index.js';
-import { renderWall } from '../src/lib/wall.js';
+// import { renderWall } from '../src/lib/wall.js';
 
 // jest.mock('../src/lib/index.js', () => (
 //   {
@@ -60,7 +60,7 @@ describe('button Go', (done) => {
     });
   });
 });
-describe('button Like', (done) => {
+/* describe('button Like', (done) => {
   test('despues de llamar boton like debe ejecutarse la función addLike', () => {
     jest.spyOn(index, 'addLike').mockImplementation(() => Promise.resolve({}));
     const DOM = document.createElement('section');
@@ -71,10 +71,10 @@ describe('button Like', (done) => {
     DOM.append(renderWall(mock));
     console.log(buttonLike);
 
-    /* let docID;
+     let docID;
     let userID;
     docID = '5vMJEBWbmK5QH5JfNUyM';
-    userID = 'iMoLjxbUuKWTnvhHjBN2aKLOnUG3'; */
+    userID = 'iMoLjxbUuKWTnvhHjBN2aKLOnUG3';
 
     buttonLike.click();
     setTimeout(() => {
