@@ -1,4 +1,4 @@
-import Img_logo_habitate from '../../src/Images/logo-habitate.png';
+import Img_logo_habitate from '../Images/logo-habitate.png';
 
 export const renderWelcome = (navigateTo) => {
   const section = document.createElement('section');
