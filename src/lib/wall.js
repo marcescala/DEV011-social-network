@@ -258,6 +258,7 @@ export const renderWall = (navigateTo) => {
       postSection.textContent = '';
       querySnapshot.forEach((element) => {
         renderPost(element);
+        console.log(renderPost);
       });
     });
   });
