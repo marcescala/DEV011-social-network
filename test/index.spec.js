@@ -2,16 +2,10 @@
  * @jest-environment jsdom
  */
 
-<<<<<<< HEAD
-// import { signOut } from 'firebase/auth';
-=======
-
->>>>>>> 3891d85fad26aae2aefb023b296fdbd92ddb9594
 import { renderSignup } from '../src/lib/signup.js';
 import { renderWall } from '../src/lib/wall.js';
 // import { addLike } from '../src/lib/index.js';
 import * as index from '../src/lib/index.js';
-// import { renderWall } from '../src/lib/wall.js';
 
 // jest.mock('../src/lib/index.js', () => (
 //   {
@@ -111,7 +105,7 @@ describe('button-sendPost', () => {
     expect(haveAButton).not.toBe(undefined);
   });
 });
-/* describe('button Like', (done) => {
+describe('button Like', (done) => {
   test('despues de llamar boton like debe ejecutarse la función addLike', () => {
     jest.spyOn(index, 'addLike').mockImplementation(() => Promise.resolve({}));
     const DOM = document.createElement('section');
@@ -122,10 +116,10 @@ describe('button-sendPost', () => {
     DOM.append(renderWall(mock));
     console.log(buttonLike);
 
-     let docID;
+    /* let docID;
     let userID;
     docID = '5vMJEBWbmK5QH5JfNUyM';
-    userID = 'iMoLjxbUuKWTnvhHjBN2aKLOnUG3';
+    userID = 'iMoLjxbUuKWTnvhHjBN2aKLOnUG3'; */
 
     buttonLike.click();
     setTimeout(() => {
